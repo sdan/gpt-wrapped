@@ -559,8 +559,9 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
               <h2 className="text-xl font-semibold">How to get your data:</h2>
               <ol className="list-decimal list-inside space-y-2 text-gray-300">
                 <li>Go to <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">chat.openai.com</a></li>
-                <li>Click on your profile picture in the bottom-left</li>
+                <li>Click on your profile picture in the top right</li>
                 <li>Select &ldquo;Settings&rdquo;</li>
+                <li>Select &ldquo;Data Controls&rdquo;</li>
                 <li>Click &ldquo;Export data&rdquo;</li>
                 <li>Wait for the email with your data</li>
                 <li>Download and upload the ZIP file here</li>
@@ -613,6 +614,17 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                   {isLoading ? 'Processing...' : 'Select File'}
                 </label>
               </div>
+            </div>
+
+            <div className="space-y-4 bg-white/5 p-6 rounded-lg text-sm text-gray-400">
+              <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
+              <ul className="space-y-2 list-disc list-inside">
+                <li>This is a fun, unofficial project not affiliated with or endorsed by OpenAI</li>
+                <li>We do not store any of your data - all processing happens locally in your browser</li>
+                <li>The comments and analysis are meant to be playful and humorous</li>
+                <li>Your data never leaves your device and is discarded after analysis</li>
+                <li>This is a fan project created for entertainment purposes only</li>
+              </ul>
             </div>
           </>
         )}

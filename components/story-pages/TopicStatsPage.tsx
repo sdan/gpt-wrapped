@@ -23,10 +23,10 @@ export default function TopicStatsPage({ stats }: TopicStatsPageProps) {
 
   const getTopicComment = (category: string) => {
     const comments = {
-      'Coding': "Still can&apos;t solve FizzBuzz without ChatGPT?",
+      'Coding': "Still can't solve FizzBuzz without ChatGPT?",
       'Writing': "Your grammar is so bad, even autocorrect gave up",
-      'Research': "Wikipedia citations don&apos;t count as research", 
-      'Business': "Your startup idea is just &lsquo;Uber for disappointment&rsquo;",
+      'Research': "Wikipedia citations don't count as research", 
+      'Business': "Your startup idea is just Uber for disappointment",
       'Education': "Learning how to learn? Maybe start with the basics",
       'Creative': "AI generates better art than you",
       'Lifestyle': "Touch grass occasionally, please",
