@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface TimeStatsPageProps {
   stats: {
@@ -21,23 +21,22 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
     a[1] > b[1] ? a : b
   )[0];
 
- // thank you cursor for these LOL
   const timeDescriptions = {
     morning: {
       title: "Early Bird 🌅",
-      description: "You're up with the sun, ready to tackle the day's challenges with AI by your side."
+      description: "Up early, are we?"
     },
     afternoon: {
       title: "Afternoon Thinker 🌤",
-      description: "Mid-day is your sweet spot for creative problem-solving and AI collaboration."
+      description: "insert wity comment"
     },
     evening: {
       title: "Evening Explorer 🌆",
-      description: "As the day winds down, your curiosity peaks and ideas flow freely."
+      description: "insert wity comment"
     },
     night: {
       title: "Night Owl 🌙",
-      description: "In the quiet hours, you find your rhythm with AI assistance."
+      description: "insert wity comment"
     }
   };
 
@@ -45,6 +44,14 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
     const timer = setTimeout(() => setShowSecond(true), 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  const maxCount = Math.max(...Object.values(stats.timeOfDay));
+  const timeSlots = [
+    { label: "Night", time: "Night", count: stats.timeOfDay.night },
+    { label: "Morning", time: "Morning", count: stats.timeOfDay.morning },
+    { label: "Afternoon", time: "Afternoon", count: stats.timeOfDay.afternoon },
+    { label: "Evening", time: "Evening", count: stats.timeOfDay.evening },
+  ];
 
   return (
     <div className="h-full flex flex-col">
@@ -80,19 +87,30 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
             <p className="text-xl text-gray-300 max-w-sm mx-auto">
               {timeDescriptions[timePreference as keyof typeof timeDescriptions].description}
             </p>
-            <div className="flex justify-center items-end space-x-4 mt-6">
-              {Object.entries(stats.timeOfDay).map(([time, count]) => (
-                <div key={time} className="text-center">
-                  <div className="h-32 w-3 bg-white/10 rounded-full relative">
-                    <motion.div 
-                      className="absolute bottom-0 left-0 right-0 bg-green-400 rounded-full"
-                      initial={{ height: 0 }}
-                      animate={{ height: showSecond ? `${(count / Math.max(...Object.values(stats.timeOfDay))) * 100}%` : 0 }}
-                      transition={{ duration: 1, delay: 0.5 }}
+            <div className="mt-8 space-y-3">
+              {timeSlots.map((slot, index) => (
+                <motion.div 
+                  key={slot.label}
+                  className="flex items-center justify-between gap-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: showSecond ? 1 : 0, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                >
+                  <div className="flex-1 text-right">
+                    <p className="text-sm text-gray-400">{slot.time}</p>
+                  </div>
+                  <div className="w-48 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-red-500/80 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: showSecond ? `${(slot.count / maxCount) * 100}%` : 0 }}
+                      transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
                     />
                   </div>
-                  <p className="text-xs text-gray-400 mt-2 capitalize">{time}</p>
-                </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-400">{slot.count}</p>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
