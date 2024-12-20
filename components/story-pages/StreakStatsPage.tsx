@@ -73,7 +73,7 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: showSecond ? 1 : 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-2 absolute top-full left-0 right-0 pt-8"
+            className="space-y-2 absolute w-full pt-6"
           >
             <p className="text-xl text-gray-400">And your busiest day was</p>
             <p className="text-5xl font-bold text-green-400">
