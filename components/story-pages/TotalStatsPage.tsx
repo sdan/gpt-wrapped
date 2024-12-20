@@ -19,7 +19,7 @@ export default function TotalStatsPage({ stats }: TotalStatsPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/3 relative">
+      <div className="w-full h-1/4 relative">
         <Image
           src="/welcome/top.svg"
           alt="Top decorative pattern"
@@ -74,7 +74,7 @@ export default function TotalStatsPage({ stats }: TotalStatsPageProps) {
           </motion.div>
         </div>
       </div>
-      <div className="w-full h-1/3 relative">
+      <div className="w-full h-1/4 relative">
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
       </div>
     </div>

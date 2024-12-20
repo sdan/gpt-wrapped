@@ -46,17 +46,17 @@ export default function Story({
 
   return (
     <div id="story-container" className="relative h-full w-full bg-black flex flex-col">
-      <div className="absolute top-4 left-4 z-10">
+      <div className="absolute top-6 left-4 z-10">
         <span className="text-white font-bold text-lg">ChatGPT Wrapped</span>
       </div>
       <button 
-        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white"
+        className="absolute top-6 right-4 z-10 p-2 rounded-full bg-black/50 text-white"
         onClick={(e) => onTogglePause(e)}
       >
         {isPaused ? <Play size={24} /> : <Pause size={24} />}
       </button>
       <button
-        className="absolute top-4 right-16 z-10 p-2 rounded-full bg-black/50 text-white"
+        className="absolute top-6 right-16 z-10 p-2 rounded-full bg-black/50 text-white"
         onClick={handleExport}
       >
         <Download size={24} />

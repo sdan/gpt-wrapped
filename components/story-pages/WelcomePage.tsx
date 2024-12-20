@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function WelcomePage() {
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/3 relative">
+      <div className="w-full h-1/4 relative">
         <Image
           src="/descending/top.png"
           alt="Top image"
@@ -22,7 +22,7 @@ export default function WelcomePage() {
           </p>
         </div>
       </div>
-      <div className="w-full h-1/3 relative">
+      <div className="w-full h-1/4 relative">
         <Image
           src="/descending/bottom.png"
           alt="Bottom image"

@@ -79,22 +79,24 @@ export default function Stories({ stories }: StoriesProps) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="mx-auto h-full relative" style={{ aspectRatio: '9/16', maxWidth: '100vw' }}>
-        <div className="absolute top-0 left-0 right-0 z-10 flex gap-1 p-2">
-          {stories.map((_, index) => (
-            <div key={index} className="flex-1">
-              <ProgressBar
-                progress={index === currentStory ? progress : index < currentStory ? 100 : 0}
-              />
+      <div className="mx-auto h-full relative py-8">
+        <div className="h-full relative" style={{ aspectRatio: '9/16', maxWidth: '100vw', margin: '0 auto' }}>
+          <div className="h-full">
+            <Story 
+              {...stories[currentStory]} 
+              isPaused={isPaused}
+              onTogglePause={handleTogglePause}
+            />
+            <div className="absolute top-4 left-0 right-0 z-10 flex gap-1 px-4">
+              {stories.map((_, index) => (
+                <div key={index} className="flex-1">
+                  <ProgressBar
+                    progress={index === currentStory ? progress : index < currentStory ? 100 : 0}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="h-full">
-          <Story 
-            {...stories[currentStory]} 
-            isPaused={isPaused}
-            onTogglePause={handleTogglePause}
-          />
+          </div>
         </div>
       </div>
     </div>
