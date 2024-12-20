@@ -3,11 +3,7 @@ import { Upload } from 'lucide-react';
 import JSZip from 'jszip';
 
 const REQUIRED_FILES = [
-  'chat.html',
-  'conversations.json',
-  'message_feedback.json',
-  'model_comparisons.json',
-  'user.json'
+  'conversations.json'
 ];
 
 interface ExtractedData {
@@ -38,6 +34,7 @@ interface ExtractedData {
     evening: number;   // 17-21
     night: number;     // 22-4
   };
+  titles: string[];
 }
 
 interface WrappedData {
@@ -65,17 +62,20 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
   const validateZipContents = async (zip: JSZip): Promise<boolean> => {
     const fileNames = Object.keys(zip.files);
     
-    // Check if all required files are present
-    const missingFiles = REQUIRED_FILES.filter(file => !fileNames.includes(file));
-    if (missingFiles.length > 0) {
-      setError(`Missing required files: ${missingFiles.join(', ')}`);
+    // Check if conversations.json is present
+    if (!fileNames.includes('conversations.json')) {
+      setError('Missing required file: conversations.json');
       return false;
     }
 
-    // Check if there are any extra files
-    const extraFiles = fileNames.filter(file => !REQUIRED_FILES.includes(file));
-    if (extraFiles.length > 0) {
-      setError('ZIP contains unexpected files. Please upload only the original ChatGPT data export.');
+    // Check if there are any non-JSON files (except chat.html)
+    const invalidFiles = fileNames.filter(file => {
+      if (file === 'chat.html') return false;
+      return !file.endsWith('.json');
+    });
+
+    if (invalidFiles.length > 0) {
+      setError('ZIP contains unexpected non-JSON files. Only .json files and chat.html are allowed.');
       return false;
     }
 
@@ -97,6 +97,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     let longestConvoDate = '';
     let totalMessages = 0;
     let totalConversations = 0;
+    let titles: string[] = [];
     
     // Time of day counters
     let timeOfDay = {
@@ -116,6 +117,11 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
     // Process each conversation
     year2024Conversations.forEach((conversation: any) => {
+      // Add title to titles array
+      if (conversation.title) {
+        titles.push(conversation.title);
+      }
+
       // Track conversation creation time
       if (conversation.create_time) {
         const date = new Date(conversation.create_time * 1000);
@@ -221,7 +227,8 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
         date: maxChatsDate
       },
       averageMessagesPerChat: totalMessages / totalConversations,
-      timeOfDay
+      timeOfDay,
+      titles
     };
   };
 

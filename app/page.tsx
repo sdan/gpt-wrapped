@@ -39,6 +39,7 @@ interface WrappedData {
       evening: number;
       night: number;
     };
+    titles: string[];
   };
 }
 
