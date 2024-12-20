@@ -2,9 +2,20 @@ import { useState } from 'react';
 import { Upload } from 'lucide-react';
 import JSZip from 'jszip';
 
-const REQUIRED_FILES = [
-  'conversations.json'
-];
+interface Conversation {
+  title?: string;
+  create_time: number;
+  mapping?: {
+    [key: string]: {
+      message?: {
+        author?: {
+          role?: string;
+        };
+        create_time?: number;
+      };
+    };
+  };
+}
 
 interface ExtractedData {
   totalConversations: number;
@@ -84,7 +95,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
   const extractConversationsData = async (conversationsJson: string): Promise<ExtractedData> => {
     setProcessingStatus({ step: 'Parsing conversations...', progress: 50 });
-    const conversationsArray = JSON.parse(conversationsJson);
+    const conversationsArray = JSON.parse(conversationsJson) as Conversation[];
     
     // Initialize tracking variables
     const dailyConversations = new Map<string, number>();
@@ -97,10 +108,10 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     let longestConvoDate = '';
     let totalMessages = 0;
     let totalConversations = 0;
-    let titles: string[] = [];
+    const titles: string[] = [];
     
     // Time of day counters
-    let timeOfDay = {
+    const timeOfDay = {
       morning: 0,
       afternoon: 0,
       evening: 0,
@@ -108,7 +119,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     };
 
     // Filter for 2024 conversations
-    const year2024Conversations = conversationsArray.filter((conversation: any) => {
+    const year2024Conversations = conversationsArray.filter((conversation) => {
       const date = new Date(conversation.create_time * 1000);
       return date.getFullYear() === 2024;
     });
@@ -116,7 +127,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     totalConversations = year2024Conversations.length;
 
     // Process each conversation
-    year2024Conversations.forEach((conversation: any) => {
+    year2024Conversations.forEach((conversation) => {
       // Add title to titles array
       if (conversation.title) {
         titles.push(conversation.title);
@@ -143,7 +154,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       const messages = Object.values(conversation.mapping || {});
       let conversationMessages = 0;
 
-      messages.forEach((node: any) => {
+      messages.forEach((node) => {
         if (node.message?.author?.role && node.message.create_time) {
           // Only count messages with valid timestamps and roles
           const messageDate = new Date(node.message.create_time * 1000);
@@ -166,7 +177,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     // Calculate streaks
     const dates = Array.from(dailyActive).sort();
     let tempStreak = 1;
-    let currentDate = new Date();
+    const currentDate = new Date();
     
     for (let i = 1; i < dates.length; i++) {
       const curr = new Date(dates[i]);
