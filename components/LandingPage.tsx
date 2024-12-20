@@ -12,6 +12,9 @@ interface Conversation {
           role?: string;
         };
         create_time?: number;
+        content?: {
+          parts?: string[];
+        };
       };
     };
   };
@@ -46,6 +49,16 @@ interface ExtractedData {
     night: number;     // 22-4
   };
   titles: string[];
+  sentiment: {
+    swearCount: number;
+    gratitudeCount: number;
+  };
+  topics: {
+    topCategory: string;
+    distribution: {
+      [key: string]: number;
+    };
+  };
 }
 
 interface WrappedData {
@@ -62,6 +75,101 @@ interface ProcessingStatus {
   progress: number;
 }
 
+const TOPIC_KEYWORDS = {
+  'Coding': [
+    // Programming & Development
+    'code', 'programming', 'software', 'development', 'debugging', 'bug', 'error',
+    'algorithm', 'function', 'variable', 'class', 'object', 'method', 'library',
+    'javascript', 'python', 'java', 'typescript', 'c\\+\\+', 'rust', 'go', 'ruby',
+    'react', 'angular', 'vue', 'node', 'django', 'flask', 'spring', 'laravel',
+    'frontend', 'backend', 'fullstack', 'web', 'app', 'mobile', 'responsive',
+    'database', 'api', 'server', 'cloud', 'git', 'docker', 'testing', 'deployment'
+  ],
+  'Writing': [
+    // Writing and Language
+    'write', 'edit', 'proofread', 'grammar', 'spelling', 'essay', 'article',
+    'blog', 'content', 'story', 'script', 'review', 'translate', 'summarize',
+    'email', 'letter', 'document', 'report', 'thesis', 'documentation',
+    'creative writing', 'technical writing', 'copywriting', 'narrative'
+  ],
+  'Research': [
+    // Data and Research
+    'analyze', 'research', 'study', 'investigate', 'data', 'statistics',
+    'survey', 'report', 'findings', 'methodology', 'literature review',
+    'experiment', 'hypothesis', 'conclusion', 'evidence', 'source',
+    'interpretation', 'evaluation', 'assessment', 'comparison',
+    'solve', 'problem', 'solution', 'fix', 'improve', 'optimize', 'debug',
+    'troubleshoot', 'issue', 'error', 'challenge', 'question', 'help',
+    'advice', 'suggestion', 'recommendation', 'alternative', 'option',
+    'decision', 'choice', 'strategy', 'approach', 'method', 'technique'
+  ],
+  'Business': [
+    // Business and Professional
+    'business', 'startup', 'marketing', 'strategy', 'management', 'finance',
+    'product', 'customer', 'market', 'sales', 'revenue', 'investment',
+    'presentation', 'proposal', 'plan', 'analysis', 'competition', 'growth',
+    'project', 'team', 'leadership', 'organization', 'career', 'interview'
+  ],
+  'Education': [
+    // Learning and Teaching
+    'learn', 'teach', 'study', 'explain', 'understand', 'concept', 'topic',
+    'lesson', 'course', 'tutorial', 'homework', 'assignment', 'exam',
+    'question', 'answer', 'help', 'guidance', 'education', 'student',
+    'teacher', 'school', 'university', 'knowledge', 'practice', 'exercise'
+  ],
+  'Creative': [
+    // Creative and Artistic
+    'design', 'art', 'creative', 'color', 'style', 'layout', 'image',
+    'music', 'video', 'animation', 'game', 'drawing', 'illustration',
+    'logo', 'brand', 'visual', 'aesthetic', 'pattern', 'composition',
+    'photography', 'film', 'entertainment', 'media', 'fashion'
+  ],
+  'Lifestyle': [
+    // Personal and Life
+    'personal', 'life', 'health', 'fitness', 'food', 'recipe', 'diet',
+    'hobby', 'travel', 'relationship', 'family', 'friend', 'home',
+    'lifestyle', 'habit', 'goal', 'motivation', 'inspiration', 'advice',
+    'recommendation', 'experience', 'story', 'memory', 'feeling'
+  ],
+  'Philosophy': [
+    // Philosophy and Ethics
+    'philosophy', 'ethics', 'moral', 'value', 'belief', 'argument',
+    'reason', 'logic', 'argument', 'conclusion', 'principle', 'theory',
+    'idea', 'concept', 'question', 'problem', 'solution', 'argument',
+    'argument', 'argument', 'argument', 'argument', 'argument', 'argument',
+    'god', 'religion', 'faith', 'spirituality', 'metaphysics', 'consciousness',
+    'mind', 'brain', 'consciousness', 'self', 'identity', 'personality',
+  ]
+};
+
+// Helper function to calculate semantic similarity
+const calculateSimilarity = (text: string, keywords: string[]): number => {
+  text = text.toLowerCase();
+  let score = 0;
+  
+  // Check for exact matches (higher weight)
+  keywords.forEach(keyword => {
+    const keywordLower = keyword.toLowerCase();
+    if (text === keywordLower) score += 2;
+    else if (text.includes(keywordLower)) score += 1;
+    
+    // Check for word boundaries
+    const regex = new RegExp(`\\b${keywordLower}\\b`, 'i');
+    if (regex.test(text)) score += 0.5;
+    
+    // Check for partial matches in compound words
+    if (text.split(/[-_\s]/).some(part => 
+      part === keywordLower || 
+      part.startsWith(keywordLower) || 
+      part.endsWith(keywordLower)
+    )) {
+      score += 0.3;
+    }
+  });
+
+  return score;
+};
+
 export default function LandingPage({ onDataReady }: LandingPageProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,6 +180,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
   const validateZipContents = async (zip: JSZip): Promise<boolean> => {
     const fileNames = Object.keys(zip.files);
+    console.log('Files in ZIP:', fileNames);
     
     // Check if conversations.json is present
     if (!fileNames.includes('conversations.json')) {
@@ -82,11 +191,13 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     // Check if there are any non-JSON files (except chat.html)
     const invalidFiles = fileNames.filter(file => {
       if (file === 'chat.html') return false;
+      if (file.endsWith('/')) return false; // Skip directories
       return !file.endsWith('.json');
     });
 
     if (invalidFiles.length > 0) {
-      setError('ZIP contains unexpected non-JSON files. Only .json files and chat.html are allowed.');
+      console.log('Invalid files found:', invalidFiles);
+      setError(`ZIP contains unexpected non-JSON files: ${invalidFiles.join(', ')}`);
       return false;
     }
 
@@ -94,7 +205,6 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
   };
 
   const extractConversationsData = async (conversationsJson: string): Promise<ExtractedData> => {
-    setProcessingStatus({ step: 'Parsing conversations...', progress: 50 });
     const conversationsArray = JSON.parse(conversationsJson) as Conversation[];
     
     // Initialize tracking variables
@@ -109,7 +219,39 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     let totalMessages = 0;
     let totalConversations = 0;
     const titles: string[] = [];
+    let swearCount = 0;
+    let gratitudeCount = 0;
     
+    // Swear words and variations
+    const swearPatterns = [
+      /\bf+u+c+k+\w*\b/i,
+      /\bs+h+[i1!|]+t+\w*\b/i,
+      /\bb+i+t+c+h+\w*\b/i,
+      /\ba+s+s+h+o+l+e+\w*\b/i,
+      /\bd+a+m+n+\w*\b/i,
+      /\bp+i+s+s+\w*\b/i,
+      /\bc+r+a+p+\w*\b/i,
+      /\bh+e+l+l+\b/i,
+      /\bd+i+c+k+\w*\b/i,
+      /\bc+u+n+t+\w*\b/i
+    ];
+
+    // Gratitude expressions
+    const gratitudePatterns = [
+      /\b(?:thank(?:s|\sy(?:ou|a|u))?|thx|ty|tysm|tyvm)\b/i,
+      /\bappreciate(?:\sit|d)?\b/i,
+      /\bgrateful\b/i,
+      /\bthank(?:ful|fully)\b/i,
+      /(?:^|\s)ty(?:\s|$)/i,
+      /(?:^|\s)thx(?:\s|$)/i
+    ];
+    
+    // Initialize topic scores
+    const topicScores: { [key: string]: number } = {};
+    Object.keys(TOPIC_KEYWORDS).forEach(topic => {
+      topicScores[topic] = 0;
+    });
+
     // Time of day counters
     const timeOfDay = {
       morning: 0,
@@ -125,54 +267,87 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     });
 
     totalConversations = year2024Conversations.length;
-
-    // Process each conversation
-    year2024Conversations.forEach((conversation) => {
-      // Add title to titles array
-      if (conversation.title) {
-        titles.push(conversation.title);
-      }
-
-      // Track conversation creation time
-      if (conversation.create_time) {
-        const date = new Date(conversation.create_time * 1000);
-        const dateStr = date.toISOString().split('T')[0];
-        
-        // Count daily conversations
-        dailyConversations.set(dateStr, (dailyConversations.get(dateStr) || 0) + 1);
-        dailyActive.add(dateStr);
-
-        // Track time of day
-        const hour = date.getHours();
-        if (hour >= 5 && hour <= 11) timeOfDay.morning++;
-        else if (hour >= 12 && hour <= 16) timeOfDay.afternoon++;
-        else if (hour >= 17 && hour <= 21) timeOfDay.evening++;
-        else timeOfDay.night++;
-      }
-
-      // Process messages in the conversation
-      const messages = Object.values(conversation.mapping || {});
-      let conversationMessages = 0;
-
-      messages.forEach((node) => {
-        if (node.message?.author?.role && node.message.create_time) {
-          // Only count messages with valid timestamps and roles
-          const messageDate = new Date(node.message.create_time * 1000);
-          if (messageDate.getFullYear() === 2024) {
-            totalMessages++;
-            conversationMessages++;
-          }
-        }
+    
+    // Process in chunks of 100 conversations
+    const chunkSize = 100;
+    for (let i = 0; i < year2024Conversations.length; i += chunkSize) {
+      const chunk = year2024Conversations.slice(i, i + chunkSize);
+      setProcessingStatus({ 
+        step: `Processing conversations ${i + 1} to ${Math.min(i + chunkSize, year2024Conversations.length)}...`, 
+        progress: 75 + (i / year2024Conversations.length) * 15 
       });
+      
+      await new Promise<void>(async (resolve) => {
+        chunk.forEach((conversation) => {
+          const title = conversation.title;
+          if (title) {
+            titles.push(title);
+            
+            // Calculate topic scores
+            Object.entries(TOPIC_KEYWORDS).forEach(([topic, keywords]) => {
+              const similarityScore = calculateSimilarity(title, keywords);
+              topicScores[topic] += similarityScore;
+            });
+          }
 
-      if (conversationMessages > maxMessagesInConvo) {
-        maxMessagesInConvo = conversationMessages;
-        longestConvoTitle = conversation.title || 'Untitled';
-        longestConvoDate = conversation.create_time 
-          ? new Date(conversation.create_time * 1000).toISOString()
-          : '';
-      }
-    });
+          // Track conversation time
+          if (conversation.create_time) {
+            const date = new Date(conversation.create_time * 1000);
+            const dateStr = date.toISOString().split('T')[0];
+            
+            dailyConversations.set(dateStr, (dailyConversations.get(dateStr) || 0) + 1);
+            dailyActive.add(dateStr);
+
+            // Track time of day
+            const hour = date.getHours();
+            if (hour >= 5 && hour <= 11) timeOfDay.morning++;
+            else if (hour >= 12 && hour <= 16) timeOfDay.afternoon++;
+            else if (hour >= 17 && hour <= 21) timeOfDay.evening++;
+            else timeOfDay.night++;
+          }
+
+          // Process messages
+          const messages = Object.values(conversation.mapping || {});
+          let conversationMessages = 0;
+
+          messages.forEach((node) => {
+            if (node.message?.author?.role && node.message.create_time) {
+              const messageDate = new Date(node.message.create_time * 1000);
+              if (messageDate.getFullYear() === 2024) {
+                totalMessages++;
+                conversationMessages++;
+
+                if (node.message.author.role === 'user' && node.message.content?.parts?.[0]) {
+                  const messagePart = node.message.content.parts[0];
+                  if (typeof messagePart === 'string') {
+                    const messageText = messagePart.toLowerCase();
+                    
+                    // Check for swear words
+                    if (swearPatterns.some(pattern => pattern.test(messageText))) {
+                      swearCount++;
+                    }
+                    
+                    // Check for gratitude expressions
+                    if (gratitudePatterns.some(pattern => pattern.test(messageText))) {
+                      gratitudeCount++;
+                    }
+                  }
+                }
+              }
+            }
+          });
+
+          if (conversationMessages > maxMessagesInConvo) {
+            maxMessagesInConvo = conversationMessages;
+            longestConvoTitle = conversation.title || 'Untitled';
+            longestConvoDate = conversation.create_time 
+              ? new Date(conversation.create_time * 1000).toISOString()
+              : '';
+          }
+        });
+        resolve();
+      });
+    }
 
     // Calculate streaks
     const dates = Array.from(dailyActive).sort();
@@ -194,7 +369,6 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
         tempStreak = 1;
       }
 
-      // Calculate current streak
       if (i === dates.length - 1) {
         const lastActiveDate = new Date(dates[dates.length - 1]);
         const daysSinceLastActive = Math.round((currentDate.getTime() - lastActiveDate.getTime()) / (1000 * 3600 * 24));
@@ -214,7 +388,18 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       }
     });
 
-    setProcessingStatus({ step: 'Analyzing data...', progress: 75 });
+    // Find top category
+    const topCategory = Object.entries(topicScores)
+      .sort(([,a], [,b]) => b - a)[0][0];
+
+    // Calculate percentages
+    const totalScore = Object.values(topicScores).reduce((a, b) => a + b, 0);
+    const distribution = Object.fromEntries(
+      Object.entries(topicScores).map(([topic, score]) => [
+        topic,
+        totalScore > 0 ? (score / totalScore) * 100 : 0
+      ])
+    );
 
     return {
       totalConversations,
@@ -239,7 +424,15 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       },
       averageMessagesPerChat: totalMessages / totalConversations,
       timeOfDay,
-      titles
+      titles,
+      sentiment: {
+        swearCount,
+        gratitudeCount
+      },
+      topics: {
+        topCategory,
+        distribution
+      }
     };
   };
 
@@ -252,7 +445,9 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     try {
       // Load and validate ZIP
       const zip = new JSZip();
+      console.log('Loading ZIP file...');
       const zipContents = await zip.loadAsync(file);
+      console.log('ZIP file loaded successfully');
       
       if (!(await validateZipContents(zip))) {
         setIsLoading(false);
@@ -260,27 +455,52 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       }
 
       // Read conversations.json
+      console.log('Reading conversations.json...');
       const conversationsFile = zipContents.files['conversations.json'];
       if (!conversationsFile) {
         throw new Error('Could not read conversations.json');
       }
 
-      const conversationsJson = await conversationsFile.async('string');
-      const extractedData = await extractConversationsData(conversationsJson);
+      setProcessingStatus({ step: 'Reading conversations...', progress: 50 });
+      try {
+        const conversationsJson = await conversationsFile.async('string');
+        console.log('Conversations file read successfully');
+        console.log('Parsing JSON...');
+        
+        // Validate JSON structure
+        const parsed = JSON.parse(conversationsJson);
+        if (!Array.isArray(parsed)) {
+          throw new Error('Invalid conversations.json format: expected an array');
+        }
+        console.log(`Found ${parsed.length} conversations`);
 
-      setProcessingStatus({ step: 'Finalizing...', progress: 90 });
+        setProcessingStatus({ step: 'Analyzing data...', progress: 75 });
+        const extractedData = await extractConversationsData(conversationsJson);
+        console.log('Data analysis complete');
 
-      const data: WrappedData = {
-        processed: true,
-        stats: extractedData
-      };
+        setProcessingStatus({ step: 'Finalizing...', progress: 90 });
 
-      setProcessedData(data);
-      setIsProcessed(true);
-      setProcessingStatus({ step: 'Complete!', progress: 100 });
+        const data: WrappedData = {
+          processed: true,
+          stats: extractedData
+        };
+
+        setProcessedData(data);
+        setIsProcessed(true);
+        setProcessingStatus({ step: 'Complete!', progress: 100 });
+      } catch (jsonError) {
+        console.error('Error processing conversations.json:', jsonError);
+        if (jsonError instanceof SyntaxError) {
+          setError('Invalid JSON format in conversations.json');
+        } else {
+          setError(jsonError instanceof Error ? jsonError.message : 'Error processing conversations.json');
+        }
+        return;
+      }
     } catch (error: unknown) {
       console.error('Error processing file:', error);
       setError(error instanceof Error ? error.message : 'Error processing file. Please try again.');
+      setProcessingStatus({ step: 'Error occurred', progress: 0 });
     } finally {
       setIsLoading(false);
     }

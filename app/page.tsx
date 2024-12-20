@@ -6,6 +6,8 @@ import WelcomePage from '../components/story-pages/WelcomePage';
 import TotalStatsPage from '../components/story-pages/TotalStatsPage';
 import StreakStatsPage from '../components/story-pages/StreakStatsPage';
 import TimeStatsPage from '../components/story-pages/TimeStatsPage';
+import SentimentStatsPage from '../components/story-pages/SentimentStatsPage';
+import TopicStatsPage from '../components/story-pages/TopicStatsPage';
 import LandingPage from '../components/LandingPage';
 
 const Stories = dynamic(() => import('../components/Stories'), { ssr: false })
@@ -40,6 +42,16 @@ interface WrappedData {
       night: number;
     };
     titles: string[];
+    sentiment: {
+      swearCount: number;
+      gratitudeCount: number;
+    };
+    topics: {
+      topCategory: string;
+      distribution: {
+        [key: string]: number;
+      };
+    };
   };
 }
 
@@ -64,6 +76,12 @@ export default function Home() {
     },
     {
       component: data?.stats ? <TimeStatsPage stats={data.stats} /> : null,
+    },
+    {
+      component: data?.stats ? <SentimentStatsPage stats={data.stats} /> : null,
+    },
+    {
+      component: data?.stats ? <TopicStatsPage stats={data.stats} /> : null,
     },
   ];
 
