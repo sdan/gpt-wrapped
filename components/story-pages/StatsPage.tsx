@@ -90,7 +90,7 @@ export default function StatsPage({ stats }: StatsPageProps) {
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl">
-            <p className="text-4xl font-bold text-white">{stats.streaks.longest}</p>
+            <p className="text-3xl font-bold text-white">{stats.streaks.longest}</p>
             <p className="text-sm text-gray-300">Day Streak 🔥</p>
           </div>
 

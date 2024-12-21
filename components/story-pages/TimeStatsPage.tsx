@@ -137,7 +137,7 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
                 <p className="text-6xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">
                   {pages}
                 </p>
-                <p className="text-4xl">📄</p>
+                <p className="text-3xl">📄</p>
               </div>
               <p className="text-lg text-gray-300 text-balance">pages of text</p>
               {books > 0 && (

@@ -36,7 +36,7 @@ export default function AiChatThemesPage({ themes }: AiChatThemesPageProps) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 * index }}
-                  className="text-4xl font-bold text-purple-400"
+                  className="text-3xl font-bold text-purple-400"
                 >
                   {topic}
                 </motion.p>
