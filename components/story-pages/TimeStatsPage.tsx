@@ -140,7 +140,7 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
               <p className="text-lg text-gray-300">pages of text</p>
               {books > 0 && (
                 <p className="text-md text-gray-400 mt-3">
-                  That's about {books} {books === 1 ? 'book' : 'books'}! 📚
+                  That&apos;s about {books} {books === 1 ? 'book' : 'books'}! 📚
                 </p>
               )}
             </motion.div>
