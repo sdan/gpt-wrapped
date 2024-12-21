@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: 'ChatGPT Wrapped',
     images: [
       {
-        url: "/og.png",
+        url: "https://gpt-wrapped.rajan.sh/og.png",
         width: 1200,
         height: 630,
         alt: "ChatGPT Wrapped",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "ChatGPT Wrapped",
     description: "Visualize your AI journey in 2024",
     creator: "@_rajanagarwal",
-    images: ["/og.png"],
+    images: ["https://gpt-wrapped.rajan.sh/og.png"],
   },
 };
 

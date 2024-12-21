@@ -62,6 +62,7 @@ interface ExtractedData {
   averageConversationLength: number;
   linkCount: number;
   voiceCount: number;
+  totalCharacters: number;
 }
 
 interface WrappedData {
@@ -227,6 +228,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     let totalDuration = 0;
     let linkCount = 0;
     let voiceCount = 0;
+    let totalCharacters = 0;
     
     // Swear words and variations
     const swearPatterns = [
@@ -345,6 +347,8 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                     content.includes('Audio transcript')) {
                   voiceCount++;
                 }
+
+                totalCharacters += content.length;
               }
             }
 
@@ -473,6 +477,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       averageConversationLength: totalDuration / totalConversations,
       linkCount,
       voiceCount,
+      totalCharacters,
     };
   };
 

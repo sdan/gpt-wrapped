@@ -11,6 +11,7 @@ interface TimeStatsPageProps {
       evening: number;
       night: number;
     };
+    totalCharacters?: number;
   };
 }
 
@@ -24,20 +25,20 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
 
   const timeDescriptions = {
     morning: {
-      title: "Early Bird 🌅",
-      description: "Up early, are we?",
+      title: "Morning",
+      description: "You prefer to start early",
     },
     afternoon: {
-      title: "Afternoon Thinker 🌤",
-      description: "insert wity comment",
+      title: "Afternoon",
+      description: "Peak productivity hours",
     },
     evening: {
-      title: "Evening Explorer 🌆",
-      description: "insert wity comment",
+      title: "Evening",
+      description: "Winding down with AI",
     },
     night: {
-      title: "Night Owl 🌙",
-      description: "insert wity comment",
+      title: "Night Owl",
+      description: "When inspiration strikes",
     },
   };
 
@@ -54,9 +55,18 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
     { label: "Evening", time: "Evening", count: stats.timeOfDay.evening },
   ];
 
+  // Calculate pages and books (1625 characters per page, ~200 pages per book)
+  const calculatePages = () => {
+    if (!stats.totalCharacters) return 0;
+    return Math.ceil(stats.totalCharacters / 1625);
+  };
+
+  const pages = calculatePages();
+  const books = Math.ceil(pages / 200);
+
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/4 relative">
+      <div className="w-full h-1/5 relative">
         <Image
           src="/vertical/red-top.png"
           alt="Top decorative pattern"
@@ -67,21 +77,17 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
           priority
         />
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center px-4 relative">
-        <div className="text-center relative z-10 h-[400px]">
+      <div className="w-full h-3/5 flex items-center justify-center px-4">
+        <div className="text-center relative z-10 max-w-md w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-2"
+            className="mb-12"
           >
-            <p className="text-xl text-gray-400">Your ChatGPT Style</p>
-            <p className="text-5xl font-bold text-white">
-              {
-                timeDescriptions[
-                  timePreference as keyof typeof timeDescriptions
-                ].title
-              }
+            <p className="text-xl text-gray-400 mb-3">Most Active During</p>
+            <p className="text-6xl font-bold text-white">
+              {timeDescriptions[timePreference as keyof typeof timeDescriptions].title}
             </p>
           </motion.div>
 
@@ -89,25 +95,18 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: showSecond ? 1 : 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-4 absolute w-full pt-6"
+            className="space-y-8"
           >
-            <p className="text-xl text-gray-300 max-w-sm mx-auto">
-              {
-                timeDescriptions[
-                  timePreference as keyof typeof timeDescriptions
-                ].description
-              }
-            </p>
-            <div className="mt-8 space-y-3">
+            <div className="space-y-4">
               {timeSlots.map((slot, index) => (
                 <motion.div
                   key={slot.label}
-                  className="flex items-center justify-between gap-2"
+                  className="flex items-center justify-between gap-4"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: showSecond ? 1 : 0, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                 >
-                  <div className="flex-1 text-right">
+                  <div className="w-20 text-right">
                     <p className="text-sm text-gray-400">{slot.time}</p>
                   </div>
                   <div className="w-48 h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -115,23 +114,40 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
                       className="h-full bg-red-500/80 rounded-full"
                       initial={{ width: 0 }}
                       animate={{
-                        width: showSecond
-                          ? `${(slot.count / maxCount) * 100}%`
-                          : 0,
+                        width: showSecond ? `${(slot.count / maxCount) * 100}%` : 0,
                       }}
                       transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
                     />
                   </div>
-                  <div className="flex-1">
+                  <div className="w-20">
                     <p className="text-sm text-gray-400">{slot.count}</p>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: showSecond ? 1 : 0, y: showSecond ? 0 : 20 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="pt-8 border-t border-white/10"
+            >
+              <p className="text-xl text-gray-400 mb-4">You wrote the equivalent of</p>
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <p className="text-6xl font-bold text-white">{pages}</p>
+                <p className="text-4xl">📄</p>
+              </div>
+              <p className="text-lg text-gray-300">pages of text</p>
+              {books > 0 && (
+                <p className="text-md text-gray-400 mt-3">
+                  That's about {books} {books === 1 ? 'book' : 'books'}! 📚
+                </p>
+              )}
+            </motion.div>
           </motion.div>
         </div>
       </div>
-      <div className="w-full h-1/4 relative">
+      <div className="w-full h-1/5 relative">
         <Image
           src="/vertical/red-bottom.png"
           alt="Bottom decorative pattern"
