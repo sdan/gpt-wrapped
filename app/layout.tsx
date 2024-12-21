@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const fira = Fira_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-fira",
+});
+
+const interSemiBold = localFont({
+  src: "./Inter-SemiBold.ttf",
+  variable: "--font-inter-semibold",
 });
 
 export const metadata: Metadata = {
@@ -42,8 +49,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${fira.variable} font-sans relative`}>
+    <html lang="en" className={`${fira.variable} ${interSemiBold.variable}`}>
+      <body className="font-sans relative">
         <video
           autoPlay
           loop

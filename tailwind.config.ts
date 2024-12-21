@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Neue Haas Unica", "sans-serif"],
       },
       colors: {
         text: "rgba(98, 92, 88, 0.75)",

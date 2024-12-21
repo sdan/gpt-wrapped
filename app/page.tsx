@@ -59,13 +59,14 @@ interface WrappedData {
     averageConversationLength: number;
     linkCount: number;
     voiceCount: number;
-    analyze?: any;
+    analyze?: Record<string, unknown>;
   };
 }
 
 export default function Home() {
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState<WrappedData | null>(null);
+  const [enhancedWrapped, setEnhancedWrapped] = useState(false);
 
   const handleDataReady = (parsedData: WrappedData) => {
     setData(parsedData);
@@ -103,6 +104,19 @@ export default function Home() {
   return (
     <main className="h-screen w-screen overflow-hidden">
       <Stories stories={stories} />
+      {!isReady && (
+        <div className="space-y-4">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={enhancedWrapped}
+              onChange={(e) => setEnhancedWrapped(e.target.checked)}
+              className="form-checkbox h-5 w-5 text-blue-600"
+            />
+            <span className="text-white">Enhanced Wrapped with LLM</span>
+          </label>
+        </div>
+      )}
     </main>
   );
 }

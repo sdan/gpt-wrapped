@@ -197,6 +197,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
   const [processedData, setProcessedData] = useState<WrappedData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [processingStatus, setProcessingStatus] = useState<ProcessingStatus>({ step: '', progress: 0 });
+  const [enhancedWrapped, setEnhancedWrapped] = useState(false);
 
   const validateZipContents = async (zip: JSZip): Promise<boolean> => {
     const fileNames = Object.keys(zip.files);
@@ -626,28 +627,30 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
           conversations: sampledConversations,
         };
 
-        // Send sampled data to /api/analyze route
-        try {
-          const response = await fetch('/api/analyze', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(sampledData),
-          });
+        // Send sampled data to /api/analyze route if enhancedWrapped is true
+        if (enhancedWrapped) {
+          try {
+            const response = await fetch('/api/analyze', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(sampledData),
+            });
 
-          if (!response.ok) {
-            throw new Error('Failed to analyze data');
+            if (!response.ok) {
+              throw new Error('Failed to analyze data');
+            }
+
+            const analyzeData = await response.json();
+            console.log('API route analysis:', analyzeData);
+
+            // Combine extractedData with analyzeData
+            extractedData.analyze = analyzeData;
+          } catch (error) {
+            console.error('Error sending data to /api/analyze:', error);
+            // Handle error appropriately, maybe set an error state
           }
-
-          const analyzeData = await response.json();
-          console.log('API route analysis:', analyzeData);
-
-          // Combine extractedData with analyzeData
-          extractedData.analyze = analyzeData;
-        } catch (error) {
-          console.error('Error sending data to /api/analyze:', error);
-          // Handle error appropriately, maybe set an error state
         }
 
         setProcessingStatus({ step: 'Finalizing...', progress: 90 });
@@ -716,18 +719,17 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       setError('Please upload a ZIP file');
     }
   };
-
   return (
-    <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center">
+    <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center bg-black/85">
       <div className="max-w-2xl w-full space-y-8">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold">ChatGPT Wrapped</h1>
-          <p className="text-xl text-gray-400">Visualize your AI journey in 2024</p>
+          <p className="text-xl text-gray-400">wrap up your year with a wrapper</p>
         </div>
 
         {!isProcessed && (
           <>
-            <div className="space-y-6 bg-white/5 p-6 rounded-lg">
+            <div className="space-y-6 bg-zinc-900 p-6 rounded-lg border border-zinc-800">
               <h2 className="text-xl font-semibold">How to get your data:</h2>
               <ol className="list-decimal list-inside space-y-2 text-gray-300">
                 <li>Go to <a href="https://chatgpt.com/#settings/DataControls" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">chatgpt.com/#settings/DataControls</a></li>
@@ -738,8 +740,8 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
             </div>
 
             <div 
-              className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors ${
-                isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-gray-600 hover:border-gray-500'
+              className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors bg-zinc-900 ${
+                isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-zinc-800 hover:border-zinc-700'
               }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -765,7 +767,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                   disabled={isLoading}
                 />
                 {isLoading && (
-                  <div className="w-full bg-gray-700 rounded-full h-2 mt-4">
+                  <div className="w-full bg-zinc-800 rounded-full h-2 mt-4">
                     <div 
                       className="bg-blue-500 h-2 rounded-full transition-all duration-300" 
                       style={{ width: `${processingStatus.progress}%` }}
@@ -776,22 +778,31 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                   htmlFor="file-upload"
                   className={`inline-block px-4 py-2 rounded-md text-sm ${
                     isLoading
-                      ? 'bg-gray-600 cursor-not-allowed'
+                      ? 'bg-zinc-700 cursor-not-allowed'
                       : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'
                   }`}
                 >
                   {isLoading ? 'Processing...' : 'Select File'}
                 </label>
+                <label className="flex items-center justify-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={enhancedWrapped}
+                    onChange={(e) => setEnhancedWrapped(e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-blue-600 rounded-sm bg-zinc-800 border-zinc-700"
+                  />
+                  <span className="text-white">Enhanced Wrapped</span>
+                </label>
               </div>
             </div>
 
-            <div className="space-y-4 bg-white/5 p-6 rounded-lg text-sm text-gray-400">
+            <div className="space-y-4 bg-zinc-900 p-6 rounded-lg border border-zinc-800 text-sm text-gray-400">
               <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
               <ul className="space-y-2 list-disc list-inside">
                 <li>This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor Spotify.</li>
-                <li>We do not store any of your data - all processing happens locally in your browser</li>
+                <li>We do not store any of your data - all processing happens locally in your browser unless you enable Enhanced Wrapped with LLM</li>
                 <li>The comments and analysis are meant to be playful and humorous</li>
-                <li>Your data never leaves your device and is discarded after analysis</li>
+                <li>Your data never leaves your device and is discarded after analysis, except when Enhanced Wrapped is enabled - in which case conversations may be sent to OpenAI's API</li>
                 {/* <li>This is a fan project created for entertainment purposes only</li> */}
               </ul>
             </div>
@@ -800,7 +811,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
         {isProcessed && processedData?.stats && (
           <div className="text-center space-y-6">
-            <div className="bg-green-500/10 text-green-400 p-6 rounded-lg">
+            <div className="bg-green-500/10 text-green-400 p-6 rounded-lg border border-green-900">
               <p className="text-xl font-semibold">✨ Your data is ready!</p>
               <p className="text-sm mt-2">Click below to start your journey</p>
             </div>
@@ -819,4 +830,4 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       </div>
     </div>
   );
-} 
+}
