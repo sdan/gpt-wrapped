@@ -59,7 +59,7 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
               Your longest streak was
             </p>
             <div className="flex items-center justify-center space-x-3">
-              <p className="text-7xl font-bold text-white">
+              <p className="text-7xl font-bold text-white leading-none [.rendering_&]:translate-y-[-25%]">
                 {stats.streaks.longest}
               </p>
               <p className="text-5xl">🔥</p>
@@ -73,7 +73,9 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your busiest day was</p>
-            <p className="text-6xl font-bold text-green-400">{dayOfWeek}</p>
+            <p className="text-6xl font-bold text-green-400 leading-none [.rendering_&]:translate-y-[-25%]">
+              {dayOfWeek}
+            </p>
             <p className="text-2xl text-gray-300 mt-2">
               with {stats.dailyStats.mostChatsInOneDay} conversations
             </p>
@@ -87,7 +89,7 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
             <p className="text-xl text-gray-400 mb-3">
               Your longest conversation had
             </p>
-            <p className="text-7xl font-bold text-blue-400">
+            <p className="text-7xl font-bold text-blue-400 leading-none [.rendering_&]:translate-y-[-25%]">
               {stats.longestConversation.messageCount}
             </p>
             <p className="text-2xl text-gray-300 mt-2">messages exchanged</p>

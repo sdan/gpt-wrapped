@@ -60,7 +60,7 @@ export default function TopicStatsPage({ stats }: TopicStatsPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">You mostly talked about</p>
-            <p className="text-7xl font-bold text-green-400">
+            <p className="text-7xl font-bold text-green-400 leading-none [.rendering_&]:translate-y-[-25%]">
               {stats.topics.topCategory}
             </p>
             <p className="text-xl text-gray-400 mt-6">
@@ -86,7 +86,7 @@ export default function TopicStatsPage({ stats }: TopicStatsPageProps) {
                     className="h-full bg-green-400"
                   />
                 </div>
-                <p className="text-lg text-gray-400 w-16 text-left">
+                <p className="text-lg text-gray-400 w-16 text-left leading-none [.rendering_&]:translate-y-[-25%]">
                   {Math.round(percentage)}%
                 </p>
               </div>

@@ -77,16 +77,16 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
           priority
         />
       </div>
-      <div className="w-full h-3/5 flex items-center justify-center px-4">
+      <div className="flex-1 flex items-center justify-center px-4 relative">
         <div className="text-center relative z-10 max-w-md w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-12"
+            className="mb-8"
           >
-            <p className="text-xl text-gray-400 mb-3">Most Active During</p>
-            <p className="text-6xl font-bold text-white">
+            <p className="text-xl text-gray-400 mb-3 text-balance">Most Active During</p>
+            <p className="text-6xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">
               {timeDescriptions[timePreference as keyof typeof timeDescriptions].title}
             </p>
           </motion.div>
@@ -95,7 +95,7 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: showSecond ? 1 : 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-6"
           >
             <div className="space-y-4">
               {timeSlots.map((slot, index) => (
@@ -132,14 +132,16 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
               transition={{ duration: 0.8, delay: 1 }}
               className="pt-8 border-t border-white/10"
             >
-              <p className="text-xl text-gray-400 mb-4">You wrote the equivalent of</p>
+              <p className="text-xl text-gray-400 mb-4 text-balance">You wrote the equivalent of</p>
               <div className="flex items-center justify-center gap-3 mb-2">
-                <p className="text-6xl font-bold text-white">{pages}</p>
+                <p className="text-6xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">
+                  {pages}
+                </p>
                 <p className="text-4xl">📄</p>
               </div>
-              <p className="text-lg text-gray-300">pages of text</p>
+              <p className="text-lg text-gray-300 text-balance">pages of text</p>
               {books > 0 && (
-                <p className="text-md text-gray-400 mt-3">
+                <p className="text-md text-gray-400 mt-3 text-balance">
                   That&apos;s about {books} {books === 1 ? 'book' : 'books'}! 📚
                 </p>
               )}

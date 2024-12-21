@@ -72,7 +72,7 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
             <p className="text-xl text-gray-400 mb-3">
               You were mean to ChatGPT
             </p>
-            <p className="text-7xl font-bold text-red-400">
+            <p className="text-7xl font-bold text-red-400 leading-none [.rendering_&]:translate-y-[-25%]">
               {stats.sentiment.swearCount}
             </p>
             <p className="text-2xl text-gray-300 mt-2">times</p>
@@ -87,7 +87,7 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">But you were also nice</p>
-            <p className="text-7xl font-bold text-green-400">
+            <p className="text-7xl font-bold text-green-400 leading-none [.rendering_&]:translate-y-[-25%]">
               {stats.sentiment.gratitudeCount}
             </p>
             <p className="text-2xl text-gray-300 mt-2">times</p>

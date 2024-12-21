@@ -16,17 +16,19 @@ export default function Story({ component, isPaused, onTogglePause }: StoryProps
 
     if (node) {
       try {
-        // Hide buttons so they're not visible in the screenshot
+        // Hide buttons and add rendering class
         if (pauseButton) pauseButton.style.display = 'none';
         if (downloadButton) downloadButton.style.display = 'none';
-        
-        // Temporarily show the watermark
         if (watermark) watermark.style.display = 'block';
+        
+        // Add class for render-specific adjustments
+        node.classList.add('rendering');
 
         // Capture screenshot
         const canvas = await html2canvas(node, { useCORS: true });
 
-        // Restore elements
+        // Remove rendering class and restore elements
+        node.classList.remove('rendering');
         if (pauseButton) pauseButton.style.display = '';
         if (downloadButton) downloadButton.style.display = '';
         if (watermark) watermark.style.display = 'none';

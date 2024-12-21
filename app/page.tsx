@@ -11,7 +11,10 @@ import TopicStatsPage from '../components/story-pages/TopicStatsPage';
 import SummaryStatsPage from '../components/story-pages/SummaryStatsPage';
 import LandingPage from '../components/LandingPage';
 
-const Stories = dynamic(() => import('../components/Stories'), { ssr: false })
+const Stories = dynamic(() => import('../components/Stories'), { 
+  ssr: false,
+  loading: () => <div>Loading...</div>
+})
 
 interface WrappedData {
   processed: boolean;
