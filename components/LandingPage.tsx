@@ -684,6 +684,10 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
           </div>
         )}
       </div>
+      
+      <div className="text-sm text-gray-400 mt-4">
+        Built by <a href="https://x.com/_rajanagarwal" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Rajan</a> and <a href="https://x.com/sdand" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Surya</a>
+      </div>
     </div>
   );
 } 
