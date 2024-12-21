@@ -47,7 +47,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
       <div className="flex-1 flex flex-col items-center justify-center px-8 relative">
         <div className="text-center space-y-8 relative z-10 w-full max-w-2xl mx-auto">
           <div>
-            <h2 className="text-3xl font-bold text-white mb-8 text-balance">Your 2024 ChatGPT Journey</h2>
+            <h2 className="text-2xl font-bold text-white mb-8 text-balance">Your 2024 ChatGPT Journey</h2>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
@@ -57,7 +57,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <p className="text-3xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.totalConversations}</p>
+              <p className="text-2xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.totalConversations}</p>
               <p className="text-sm text-gray-300 text-balance">Total Chats</p>
             </motion.div>
 
@@ -67,7 +67,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <p className="text-3xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.totalMessages}</p>
+              <p className="text-2xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.totalMessages}</p>
               <p className="text-sm text-gray-300 text-balance">Messages Exchanged</p>
             </motion.div>
 
@@ -77,7 +77,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <p className="text-3xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.streaks.longest}🔥</p>
+              <p className="text-2xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.streaks.longest}🔥</p>
               <p className="text-sm text-gray-300 text-balance">Longest Daily Streak</p>
             </motion.div>
 
@@ -87,7 +87,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <p className="text-3xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.dailyStats.mostChatsInOneDay}</p>
+              <p className="text-2xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.dailyStats.mostChatsInOneDay}</p>
               <p className="text-sm text-gray-300 text-balance">Most Active Day</p>
             </motion.div>
 
@@ -97,7 +97,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <p className="text-3xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.longestConversation.messageCount}</p>
+              <p className="text-2xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{stats.longestConversation.messageCount}</p>
               <p className="text-sm text-gray-300 text-balance">Longest Chat (messages)</p>
             </motion.div>
 
@@ -107,7 +107,7 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <p className="text-3xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{topTopic[0]}</p>
+              <p className="text-2xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">{topTopic[0]}</p>
               <p className="text-sm text-gray-300 text-balance">Most Common Topic</p>
             </motion.div>
           </div>

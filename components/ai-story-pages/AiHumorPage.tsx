@@ -29,7 +29,7 @@ export default function AiHumorPage({ humor }: AiHumorPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">What ChatGPT REALLY noticed</p>
-            <p className="text-4xl font-bold text-red-400 leading-snug text-balance">
+            <p className="text-3xl font-bold text-red-400 leading-snug text-balance">
               &ldquo;{humor.exchange}&rdquo;
             </p>
           </motion.div>

@@ -30,7 +30,7 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your AI Persona</p>
-            <p className="text-4xl font-bold text-blue-300 leading-tight text-balance">
+            <p className="text-3xl font-bold text-blue-300 leading-tight text-balance">
               {persona.persona_description}
             </p>
           </motion.div>

@@ -29,7 +29,7 @@ export default function AiAuraPage({ aura }: AiAuraPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your User Aura</p>
-            <p className="text-4xl font-bold text-orange-400 leading-snug">
+            <p className="text-3xl font-bold text-orange-400 leading-snug">
               {aura.user_personality}
             </p>
           </motion.div>

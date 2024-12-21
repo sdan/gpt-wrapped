@@ -16,7 +16,7 @@ export default function AIWelcomePage() {
       </div>
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-3xl font-bold text-white mb-4">
             ChatGPT Wrapped
           </h1>
           <p className="text-xl text-gray-300">End 2024 with a GPT Wrapper</p>
