@@ -9,11 +9,14 @@ const fira = Fira_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Day 13: ChatGPT Wrapped",
+  title: "ChatGPT Wrapped",
   description: "Visualize your AI journey in 2024",
+  metadataBase: new URL('https://gpt-wrapped.rajan.sh'),
   openGraph: {
-    title: "Day 13: ChatGPT Wrapped",
+    title: "ChatGPT Wrapped",
     description: "Visualize your AI journey in 2024",
+    url: 'https://gpt-wrapped.rajan.sh',
+    siteName: 'ChatGPT Wrapped',
     images: [
       {
         url: "/og.png",
@@ -22,11 +25,13 @@ export const metadata: Metadata = {
         alt: "ChatGPT Wrapped",
       },
     ],
+    type: 'website',
   },
   twitter: {
     card: "summary_large_image",
-    title: "Day 13: ChatGPT Wrapped",
+    title: "ChatGPT Wrapped",
     description: "Visualize your AI journey in 2024",
+    creator: "@_rajanagarwal",
     images: ["/og.png"],
   },
 };
