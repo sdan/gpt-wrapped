@@ -43,7 +43,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${fira.variable} font-sans`}>{children}</body>
+      <body className={`${fira.variable} font-sans relative`}>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="fixed top-0 left-0 w-full h-full object-cover -z-10"
+        >
+          <source src="/background.mp4" type="video/mp4" />
+        </video>
+        {children}
+      </body>
     </html>
   );
 }

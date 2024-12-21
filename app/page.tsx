@@ -59,6 +59,7 @@ interface WrappedData {
     averageConversationLength: number;
     linkCount: number;
     voiceCount: number;
+    analyze?: any;
   };
 }
 

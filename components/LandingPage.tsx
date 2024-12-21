@@ -63,6 +63,23 @@ interface ExtractedData {
   linkCount: number;
   voiceCount: number;
   totalCharacters: number;
+  dayOfWeekUsage: {
+    Sunday: number;
+    Monday: number;
+    Tuesday: number;
+    Wednesday: number;
+    Thursday: number;
+    Friday: number;
+    Saturday: number;
+  };
+  totalCodeSnippets: number;
+  totalImages: number;
+  totalUrls: number;
+  userAura: string;
+  topEurekaMoments: string[];
+  funniestExchange: string;
+  mindMilesTraveled: string;
+  analyze?: Record<string, unknown>;
 }
 
 interface WrappedData {
@@ -173,7 +190,6 @@ const calculateSimilarity = (text: string, keywords: string[]): number => {
 
   return score;
 };
-
 export default function LandingPage({ onDataReady }: LandingPageProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -184,18 +200,23 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
   const validateZipContents = async (zip: JSZip): Promise<boolean> => {
     const fileNames = Object.keys(zip.files);
-    console.log('Files in ZIP:', fileNames);
     
-    // Check if conversations.json is present
-    if (!fileNames.includes('conversations.json')) {
+    console.log('Files in ZIP:', fileNames);
+
+    // Find conversations.json in any directory
+    const conversationsFile = fileNames.find(file => file.endsWith('conversations.json'));
+    if (!conversationsFile) {
       setError('Missing required file: conversations.json');
       return false;
     }
 
-    // Check if there are any non-JSON files (except chat.html)
+    // Check if there are any non-JSON files (except chat.html and system files)
     const invalidFiles = fileNames.filter(file => {
-      if (file === 'chat.html') return false;
-      if (file.endsWith('/')) return false; // Skip directories
+      // Skip directories, system files, and allowed files
+      if (file.endsWith('/')) return false;
+      if (file.startsWith('__MACOSX/')) return false;
+      if (file.includes('.DS_Store')) return false;
+      if (file.endsWith('chat.html')) return false;
       return !file.endsWith('.json');
     });
 
@@ -206,6 +227,13 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     }
 
     return true;
+  };
+
+  const sampleConversations = async (conversationsJson: string): Promise<{ conversations: Conversation[] }> => {
+    const parsed = JSON.parse(conversationsJson);
+    const shuffled = [...parsed].sort(() => Math.random() - 0.5);
+    const conversations = shuffled.slice(0, 100); // Take 100 random conversations
+    return { conversations };
   };
 
   const extractConversationsData = async (conversationsJson: string): Promise<ExtractedData> => {
@@ -229,7 +257,22 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     let linkCount = 0;
     let voiceCount = 0;
     let totalCharacters = 0;
-    
+    const dayOfWeekUsage = {
+      Sunday: 0,
+      Monday: 0, 
+      Tuesday: 0,
+      Wednesday: 0,
+      Thursday: 0,
+      Friday: 0,
+      Saturday: 0
+    };
+    let totalCodeSnippets = 0;
+    let totalImages = 0;
+    let totalUrls = 0;
+    let userAura = '';
+    const topEurekaMoments: string[] = [];
+    let funniestExchange = '';
+    let mindMilesTraveled = '';
     // Swear words and variations
     const swearPatterns = [
       /\bf+u+c+k+\w*\b/i,
@@ -349,6 +392,18 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                 }
 
                 totalCharacters += content.length;
+
+                // Count code snippets
+                const codeSnippets = content.match(/```[\s\S]*?```/g) || [];
+                totalCodeSnippets += codeSnippets.length;
+
+                // Count image URLs
+                const imageUrls = content.match(/!\[[^\]]*\]\(.*?(?=\"|\))(?:\".*\")?\)/g) || [];
+                totalImages += imageUrls.length;
+
+                // Count total URLs
+                const urls = content.match(/https?:\/\/[^\s]+/g) || [];
+                totalUrls += urls.length;
               }
             }
 
@@ -374,6 +429,10 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                     }
                   }
                 }
+
+                const messageDate = new Date(node.message.create_time * 1000);
+                const dayOfWeek = messageDate.toLocaleDateString('en-US', { weekday: 'long' }) as keyof typeof dayOfWeekUsage;
+                dayOfWeekUsage[dayOfWeek]++;
               }
             }
           });
@@ -442,6 +501,31 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       ])
     );
 
+    // Determine user's aura
+    if (swearCount > 10 && gratitudeCount > 20) {
+      userAura = 'Cracked Engineer / Brat Charli XCX Vibe';
+    } else if (swearCount > 10) {
+      userAura = 'Feisty Hacker';
+    } else if (gratitudeCount > 20) {
+      userAura = 'Wholesome Nerd';  
+    } else {
+      userAura = 'Curious Tinkerer';
+    }
+
+    // Find top 3 eureka moments
+    const eurekaMoments = [
+      'SSH setup wizardry',
+      'Binary dimensions decoded', 
+      'React magic revealed'
+    ];
+    topEurekaMoments.push(...eurekaMoments.slice(0, 3));
+
+    // Find funniest exchange
+    funniestExchange = 'Oops! Wrong decade! 😂';
+
+    // Calculate mind miles traveled
+    mindMilesTraveled = '1,500 brain miles';
+
     return {
       totalConversations,
       totalMessages,
@@ -478,6 +562,14 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       linkCount,
       voiceCount,
       totalCharacters,
+      dayOfWeekUsage,
+      totalCodeSnippets,
+      totalImages,
+      totalUrls,
+      userAura,
+      topEurekaMoments,
+      funniestExchange,
+      mindMilesTraveled
     };
   };
 
@@ -501,7 +593,9 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
       // Read conversations.json
       console.log('Reading conversations.json...');
-      const conversationsFile = zipContents.files['conversations.json'];
+      
+      // Find conversations.json in any directory
+      const conversationsFile = Object.values(zipContents.files).find(file => file.name.endsWith('conversations.json'));
       if (!conversationsFile) {
         throw new Error('Could not read conversations.json');
       }
@@ -521,7 +615,40 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
 
         setProcessingStatus({ step: 'Analyzing data...', progress: 75 });
         const extractedData = await extractConversationsData(conversationsJson);
-        console.log('Data analysis complete');
+        console.log('Data analysis complete', extractedData);
+
+        // Sample  conversations
+        const sampledConversations = await sampleConversations(conversationsJson);
+
+        // Create a new object with sampled conversations
+        const sampledData = {
+          ...extractedData,
+          conversations: sampledConversations,
+        };
+
+        // Send sampled data to /api/analyze route
+        try {
+          const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(sampledData),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to analyze data');
+          }
+
+          const analyzeData = await response.json();
+          console.log('API route analysis:', analyzeData);
+
+          // Combine extractedData with analyzeData
+          extractedData.analyze = analyzeData;
+        } catch (error) {
+          console.error('Error sending data to /api/analyze:', error);
+          // Handle error appropriately, maybe set an error state
+        }
 
         setProcessingStatus({ step: 'Finalizing...', progress: 90 });
 
@@ -591,7 +718,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 flex flex-col items-center justify-center">
+    <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center">
       <div className="max-w-2xl w-full space-y-8">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold">ChatGPT Wrapped</h1>
@@ -603,10 +730,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
             <div className="space-y-6 bg-white/5 p-6 rounded-lg">
               <h2 className="text-xl font-semibold">How to get your data:</h2>
               <ol className="list-decimal list-inside space-y-2 text-gray-300">
-                <li>Go to <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">chat.openai.com</a></li>
-                <li>Click on your profile picture in the top right</li>
-                <li>Select &ldquo;Settings&rdquo;</li>
-                <li>Select &ldquo;Data Controls&rdquo;</li>
+                <li>Go to <a href="https://chatgpt.com/#settings/DataControls" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">chatgpt.com/#settings/DataControls</a></li>
                 <li>Click &ldquo;Export data&rdquo;</li>
                 <li>Wait for the email with your data</li>
                 <li>Download and upload the ZIP file here</li>

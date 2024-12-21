@@ -9,8 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-fira)"],
+        sans: ["Inter", "sans-serif"],
       },
+      colors: {
+        text: "rgba(98, 92, 88, 0.75)",
+      },
+      lineHeight: {
+        relaxed: "calc(1em + 0.8em)",
+      },
+      padding: {
+        page: "3.5%",
+      }
     },
   },
   plugins: [],
