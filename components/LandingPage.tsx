@@ -663,7 +663,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
                 <li>We do not store any of your data - all processing happens locally in your browser</li>
                 <li>The comments and analysis are meant to be playful and humorous</li>
                 <li>Your data never leaves your device and is discarded after analysis</li>
-                <li>This is a fan project created for entertainment purposes only</li>
+                {/* <li>This is a fan project created for entertainment purposes only</li> */}
               </ul>
             </div>
           </>
