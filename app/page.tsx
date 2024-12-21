@@ -29,40 +29,34 @@ const Stories = dynamic(() => import('../components/Stories'), {
 export default function Home() {
   const [enhancedWrapped, setEnhancedWrapped] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
-  const handleDataReady = (parsedData) => {
+  const handleDataReady = (parsedData: any) => {
     setData(parsedData);
     setIsReady(true);
   };
 
-  let stories = [];
-
-  if (enhancedWrapped && data?.stats?.analyze) {
-    console.log('Rendering ONLY AI pages');
-    stories.push(
-      { component: <AIWelcomePage /> },
-      { component: <AiPersonaPage persona={data.stats.analyze.bespoke_ai_persona} /> },
-      { component: <AiChatThemesPage themes={data.stats.analyze.chat_themes} /> },
-      { component: <AiQuipPage quip={data.stats.analyze.crown_jewel_quip} /> },
-      { component: <AiEurekaPage eureka={data.stats.analyze.eureka_trifecta} /> },
-      { component: <AiHumorPage humor={data.stats.analyze.laughter_catalyst} /> },
-      { component: <AiJourneyPage journey={data.stats.analyze.mind_miles_traveled} /> },
-      { component: <AiFascinationPage fascination={data.stats.analyze.primary_fascination} /> },
-      { component: <AiAuraPage aura={data.stats.analyze.user_aura} /> }
-    );
-  } else {
-    console.log('Rendering ONLY basic pages');
-    stories.push(
-      { component: <WelcomePage /> },
-      { component: data?.stats ? <TotalStatsPage stats={data.stats} /> : null },
-      { component: data?.stats ? <StreakStatsPage stats={data.stats} /> : null },
-      { component: data?.stats ? <TimeStatsPage stats={data.stats} /> : null },
-      { component: data?.stats ? <SentimentStatsPage stats={data.stats} /> : null },
-      { component: data?.stats ? <TopicStatsPage stats={data.stats} /> : null },
-      { component: data?.stats ? <SummaryStatsPage stats={data.stats} /> : null }
-    );
-  }
+  const stories = enhancedWrapped && data?.stats?.analyze
+    ? [
+        { component: <AIWelcomePage key="AIWelcomePage" /> },
+        { component: <AiPersonaPage key="AiPersonaPage" persona={data.stats.analyze.bespoke_ai_persona} /> },
+        { component: <AiChatThemesPage key="AiChatThemesPage" themes={data.stats.analyze.chat_themes} /> },
+        { component: <AiQuipPage key="AiQuipPage" quip={data.stats.analyze.crown_jewel_quip} /> },
+        { component: <AiEurekaPage key="AiEurekaPage" eureka={data.stats.analyze.eureka_trifecta} /> },
+        { component: <AiHumorPage key="AiHumorPage" humor={data.stats.analyze.laughter_catalyst} /> },
+        { component: <AiJourneyPage key="AiJourneyPage" journey={data.stats.analyze.mind_miles_traveled} /> },
+        { component: <AiFascinationPage key="AiFascinationPage" fascination={data.stats.analyze.primary_fascination} /> },
+        { component: <AiAuraPage key="AiAuraPage" aura={data.stats.analyze.user_aura} /> },
+      ]
+    : [
+        { component: <WelcomePage key="WelcomePage" /> },
+        { component: data?.stats ? <TotalStatsPage key="TotalStatsPage" stats={data.stats} /> : null },
+        { component: data?.stats ? <StreakStatsPage key="StreakStatsPage" stats={data.stats} /> : null },
+        { component: data?.stats ? <TimeStatsPage key="TimeStatsPage" stats={data.stats} /> : null },
+        { component: data?.stats ? <SentimentStatsPage key="SentimentStatsPage" stats={data.stats} /> : null },
+        { component: data?.stats ? <TopicStatsPage key="TopicStatsPage" stats={data.stats} /> : null },
+        { component: data?.stats ? <SummaryStatsPage key="SummaryStatsPage" stats={data.stats} /> : null },
+      ]
 
   if (!isReady) {
     return (

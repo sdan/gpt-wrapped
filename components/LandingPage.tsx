@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from 'react';
 import { Upload } from 'lucide-react';
 import JSZip from 'jszip';
@@ -204,23 +203,62 @@ const calculateSimilarity = (text: string, keywords: string[]): number => {
 };
 
 const renderAiPages = (analyze: Record<string, unknown>) => [
-  <AiPersonaPage persona={analyze.bespoke_ai_persona as { persona_description: string; persona_vibe: string }} />,
-  <AiChatThemesPage themes={analyze.chat_themes as { top_3_topics: string[] }} />,
-  <AiQuipPage quip={analyze.crown_jewel_quip as { message: string }} />,
-  <AiEurekaPage eureka={analyze.eureka_trifecta as { top_3_moments: string[] }} />,
-  <AiHumorPage humor={analyze.laughter_catalyst as { exchange: string }} />,
-  <AiJourneyPage journey={analyze.mind_miles_traveled as { distance_traveled: string }} />,
-  <AiFascinationPage fascination={analyze.primary_fascination as { favorite_message: string; fun_fact: string; topic: string; total_messages: number }} />,
-  <AiAuraPage aura={analyze.user_aura as { user_personality: string }} />,
-];
+  <AiPersonaPage
+    key="AiPersonaPage"
+    persona={analyze.bespoke_ai_persona as {
+      persona_description: string
+      persona_vibe: string
+    }}
+  />,
+  <AiChatThemesPage
+    key="AiChatThemesPage"
+    themes={analyze.chat_themes as { top_3_topics: string[] }}
+  />,
+  <AiQuipPage
+    key="AiQuipPage"
+    quip={analyze.crown_jewel_quip as { message: string }}
+  />,
+  <AiEurekaPage
+    key="AiEurekaPage"
+    eureka={analyze.eureka_trifecta as { top_3_moments: string[] }}
+  />,
+  <AiHumorPage
+    key="AiHumorPage"
+    humor={analyze.laughter_catalyst as { exchange: string }}
+  />,
+  <AiJourneyPage
+    key="AiJourneyPage"
+    journey={analyze.mind_miles_traveled as { distance_traveled: string }}
+  />,
+  <AiFascinationPage
+    key="AiFascinationPage"
+    fascination={analyze.primary_fascination as {
+      favorite_message: string
+      fun_fact: string
+      topic: string
+      total_messages: number
+    }}
+  />,
+  <AiAuraPage
+    key="AiAuraPage"
+    aura={analyze.user_aura as { user_personality: string }}
+  />,
+]
 
-export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedWrapped }: LandingPageProps) {
-  const [isDragging, setIsDragging] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isProcessed, setIsProcessed] = useState(false);
-  const [processedData, setProcessedData] = useState<WrappedData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [processingStatus, setProcessingStatus] = useState<ProcessingStatus>({ step: '', progress: 0 });
+export default function LandingPage({
+  onDataReady,
+  enhancedWrapped,
+  setEnhancedWrapped,
+}: LandingPageProps) {
+  const [isDragging, setIsDragging] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isProcessed, setIsProcessed] = useState(false)
+  const [processedData, setProcessedData] = useState<WrappedData | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [processingStatus, setProcessingStatus] = useState<ProcessingStatus>({
+    step: '',
+    progress: 0,
+  })
 
   const validateZipContents = async (zip: JSZip): Promise<boolean> => {
     const fileNames = Object.keys(zip.files);
@@ -704,54 +742,18 @@ export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedW
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    setError(null);
-    
-    const file = e.dataTransfer.files[0];
-    if (file && file.name.endsWith('.zip')) {
-      await processFile(file);
-    } else {
-      setError('Please upload a ZIP file');
-    }
-  };
-
-  const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(null);
-    const file = e.target.files?.[0];
-    if (file && file.name.endsWith('.zip')) {
-      await processFile(file);
-    } else {
-      setError('Please upload a ZIP file');
-    }
-  };
-
   const handleViewWrapped = () => {
-    console.log('handleViewWrapped called, processedData:', processedData);
     if (processedData) {
       if (enhancedWrapped && processedData.stats?.analyze) {
-        console.log('Enhanced wrapped mode with analyze data');
         onDataReady({
           ...processedData,
           aiPages: renderAiPages(processedData.stats.analyze),
-        });
+        })
       } else {
-        console.log('Basic wrapped mode or no analyze data');
-        onDataReady(processedData);
+        onDataReady(processedData)
       }
     }
-  };
+  }
 
   return (
     <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center bg-black/85">
@@ -766,20 +768,46 @@ export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedW
             <div className="space-y-6 bg-zinc-900 p-6 rounded-lg border border-zinc-800">
               <h2 className="text-xl font-semibold">How to get your data:</h2>
               <ol className="list-decimal list-inside space-y-2 text-gray-300">
-                <li>Go to <a href="https://chatgpt.com/#settings/DataControls" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">chatgpt.com/#settings/DataControls</a></li>
-                <li>Click &ldquo;Export data&rdquo;</li>
+                <li>
+                  Go to{' '}
+                  <a
+                    href="https://chatgpt.com/#settings/DataControls"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:underline"
+                  >
+                    chatgpt.com/#settings/DataControls
+                  </a>
+                </li>
+                <li>Click “Export data”</li>
                 <li>Wait for the email with your data</li>
                 <li>Download and upload the ZIP file here</li>
               </ol>
             </div>
 
-            <div 
+            <div
               className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors bg-zinc-900 ${
                 isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-zinc-800 hover:border-zinc-700'
               }`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
+              onDragOver={(e) => {
+                e.preventDefault()
+                setIsDragging(true)
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault()
+                setIsDragging(false)
+              }}
+              onDrop={async (e) => {
+                e.preventDefault()
+                setIsDragging(false)
+                setError(null)
+                const file = e.dataTransfer.files[0]
+                if (file && file.name.endsWith('.zip')) {
+                  await processFile(file)
+                } else {
+                  setError('Please upload a ZIP file')
+                }
+              }}
             >
               <div className="space-y-4">
                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
@@ -788,22 +816,16 @@ export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedW
                     {isLoading ? processingStatus.step : 'Drop your ZIP file here'}
                   </p>
                   <p className="text-sm text-gray-400">
-                    {isLoading ? `${processingStatus.progress}% complete` : 'or click to browse'}
+                    {isLoading
+                      ? `${processingStatus.progress}% complete`
+                      : 'or click to browse'}
                   </p>
                   {error && <p className="text-red-400 text-sm">{error}</p>}
                 </div>
-                <input
-                  type="file"
-                  accept=".zip"
-                  onChange={handleFileInput}
-                  className="hidden"
-                  id="file-upload"
-                  disabled={isLoading}
-                />
                 {isLoading && (
                   <div className="w-full bg-zinc-800 rounded-full h-2 mt-4">
-                    <div 
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-300" 
+                    <div
+                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${processingStatus.progress}%` }}
                     />
                   </div>
@@ -818,6 +840,23 @@ export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedW
                 >
                   {isLoading ? 'Processing...' : 'Select File'}
                 </label>
+                <input
+                  type="file"
+                  accept=".zip"
+                  onChange={async (e) => {
+                    setError(null)
+                    const pickedFile = e.target.files?.[0]
+                    if (pickedFile && pickedFile.name.endsWith('.zip')) {
+                      await processFile(pickedFile)
+                    } else {
+                      setError('Please upload a ZIP file')
+                    }
+                  }}
+                  className="hidden"
+                  id="file-upload"
+                  disabled={isLoading}
+                />
+
                 <label className="flex items-center justify-center space-x-2">
                   <input
                     type="checkbox"
@@ -833,11 +872,20 @@ export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedW
             <div className="space-y-4 bg-zinc-900 p-6 rounded-lg border border-zinc-800 text-sm text-gray-400">
               <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
               <ul className="space-y-2 list-disc list-inside">
-                <li>This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor Spotify.</li>
-                <li>We do not store any of your data - all processing happens locally in your browser unless you enable Enhanced Wrapped with LLM</li>
+                <li>
+                  This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor
+                  Spotify.
+                </li>
+                <li>
+                  We do not store any of your data - all processing happens locally in your browser
+                  unless you enable Enhanced Wrapped with LLM
+                </li>
                 <li>The comments and analysis are meant to be playful and humorous</li>
-                <li>Your data never leaves your device and is discarded after analysis, except when Enhanced Wrapped is enabled - in which case conversations may be sent to OpenAI's API</li>
-                {/* <li>This is a fan project created for entertainment purposes only</li> */}
+                <li>
+                  Your data never leaves your device and is discarded after analysis, except when
+                  Enhanced Wrapped is enabled - in which case conversations may be sent to
+                  OpenAI&#39;s API
+                </li>
               </ul>
             </div>
           </>
@@ -858,10 +906,27 @@ export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedW
           </div>
         )}
       </div>
-      
+
       <div className="text-sm text-gray-400 mt-4">
-        Built by <a href="https://x.com/_rajanagarwal" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Rajan</a> and <a href="https://x.com/sdand" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Surya</a>
+        Built by{' '}
+        <a
+          href="https://x.com/_rajanagarwal"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:underline"
+        >
+          Rajan
+        </a>{' '}
+        and{' '}
+        <a
+          href="https://x.com/sdand"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:underline"
+        >
+          Surya
+        </a>
       </div>
     </div>
-  );
+  )
 }
