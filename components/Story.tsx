@@ -19,8 +19,11 @@ export default function Story({ component, isPaused, onTogglePause }: StoryProps
         // Hide buttons so they're not visible in the screenshot
         if (pauseButton) pauseButton.style.display = 'none';
         if (downloadButton) downloadButton.style.display = 'none';
+        
+        // Temporarily show the watermark
         if (watermark) watermark.style.display = 'block';
 
+        // Capture screenshot
         const canvas = await html2canvas(node, { useCORS: true });
 
         // Restore elements
@@ -35,18 +38,28 @@ export default function Story({ component, isPaused, onTogglePause }: StoryProps
         link.href = dataUrl;
         link.click();
       } catch (error) {
-        console.error("Error capturing image:", error);
+        console.error('Error capturing image:', error);
       }
     }
   }
 
   return (
-    <div 
-      id="story-container" 
+    <div
+      id="story-container"
       className="relative h-full w-full bg-black flex flex-col"
       style={{ aspectRatio: '9/16' }}
     >
-      <button 
+      {/* Add a global watermark here, hidden by default */}
+      <div
+        id="watermark"
+        style={{ display: 'none' }}
+        className="absolute top-2 left-2 z-[9999] p-2 text-white text-xs pointer-events-none bg-black/50"
+      >
+        gpt-wrapped.rajan.sh
+      </div>
+
+      {/* Download button at top-right */}
+      <button
         id="download-button"
         className="absolute top-6 right-4 z-10 p-2 rounded-full bg-black/50 text-white story-control"
         onClick={(e) => {
@@ -56,13 +69,16 @@ export default function Story({ component, isPaused, onTogglePause }: StoryProps
       >
         <DownloadIcon size={24} />
       </button>
-      <button 
+
+      {/* Pause/Play button, just to the left of Download */}
+      <button
         id="pause-button"
         className="absolute top-6 right-16 z-10 p-2 rounded-full bg-black/50 text-white story-control"
         onClick={onTogglePause}
       >
         {isPaused ? <Play size={24} /> : <Pause size={24} />}
       </button>
+
       <div className="flex-1">
         {component}
       </div>
