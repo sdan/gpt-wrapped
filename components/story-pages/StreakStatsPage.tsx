@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface StreakStatsPageProps {
   stats: {
@@ -21,7 +21,10 @@ interface StreakStatsPageProps {
 export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
   const [showSecond, setShowSecond] = useState(false);
   const [showThird, setShowThird] = useState(false);
-  const dayOfWeek = new Date(stats.dailyStats.date).toLocaleDateString('en-US', { weekday: 'long' });
+  const dayOfWeek = new Date(stats.dailyStats.date).toLocaleDateString(
+    "en-US",
+    { weekday: "long" }
+  );
 
   useEffect(() => {
     const timer1 = setTimeout(() => setShowSecond(true), 2000);
@@ -39,6 +42,8 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
           src="/rigid/blue-top.png"
           alt="Top decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
@@ -50,7 +55,9 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">Your longest streak was</p>
+            <p className="text-xl text-gray-400 mb-3">
+              Your longest streak was
+            </p>
             <div className="flex items-center justify-center space-x-3">
               <p className="text-7xl font-bold text-white">
                 {stats.streaks.longest}
@@ -66,9 +73,7 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your busiest day was</p>
-            <p className="text-6xl font-bold text-green-400">
-              {dayOfWeek}
-            </p>
+            <p className="text-6xl font-bold text-green-400">{dayOfWeek}</p>
             <p className="text-2xl text-gray-300 mt-2">
               with {stats.dailyStats.mostChatsInOneDay} conversations
             </p>
@@ -79,7 +84,9 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
             animate={{ opacity: showThird ? 1 : 0, y: showThird ? 0 : 20 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">Your longest conversation had</p>
+            <p className="text-xl text-gray-400 mb-3">
+              Your longest conversation had
+            </p>
             <p className="text-7xl font-bold text-blue-400">
               {stats.longestConversation.messageCount}
             </p>
@@ -95,10 +102,12 @@ export default function StreakStatsPage({ stats }: StreakStatsPageProps) {
           src="/rigid/blue-bottom.png"
           alt="Bottom decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
       </div>
     </div>
   );
-} 
+}

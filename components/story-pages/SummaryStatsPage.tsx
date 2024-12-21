@@ -33,11 +33,13 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/4 relative">
+            <div className="w-full h-1/4 relative">
         <Image
           src="/summary/top.png"
           alt="Top decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
@@ -140,6 +142,8 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
           src="/summary/bottom.png"
           alt="Bottom decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />

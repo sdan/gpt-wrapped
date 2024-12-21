@@ -41,11 +41,13 @@ export default function TopicStatsPage({ stats }: TopicStatsPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/5 relative">
+      <div className="w-full h-1/4 relative">
         <Image
           src="/rigid/green-top.png"
           alt="Top decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
@@ -92,11 +94,13 @@ export default function TopicStatsPage({ stats }: TopicStatsPageProps) {
           </motion.div>
         </div>
       </div>
-      <div className="w-full h-1/5 relative">
+      <div className="w-full h-1/4 relative">
         <Image
           src="/rigid/green-bottom.png"
           alt="Bottom decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />

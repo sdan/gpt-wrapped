@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import React from 'react';
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import React from "react";
 
 interface TimeStatsPageProps {
   stats: {
@@ -16,29 +16,29 @@ interface TimeStatsPageProps {
 
 export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
   const [showSecond, setShowSecond] = useState(false);
-  
+
   // Calculate preferred time of day
-  const timePreference = Object.entries(stats.timeOfDay).reduce((a, b) => 
+  const timePreference = Object.entries(stats.timeOfDay).reduce((a, b) =>
     a[1] > b[1] ? a : b
   )[0];
 
   const timeDescriptions = {
     morning: {
       title: "Early Bird 🌅",
-      description: "Up early, are we?"
+      description: "Up early, are we?",
     },
     afternoon: {
       title: "Afternoon Thinker 🌤",
-      description: "insert wity comment"
+      description: "insert wity comment",
     },
     evening: {
       title: "Evening Explorer 🌆",
-      description: "insert wity comment"
+      description: "insert wity comment",
     },
     night: {
       title: "Night Owl 🌙",
-      description: "insert wity comment"
-    }
+      description: "insert wity comment",
+    },
   };
 
   useEffect(() => {
@@ -61,6 +61,8 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
           src="/vertical/red-top.png"
           alt="Top decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
@@ -75,7 +77,11 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
           >
             <p className="text-xl text-gray-400">Your ChatGPT Style</p>
             <p className="text-5xl font-bold text-white">
-              {timeDescriptions[timePreference as keyof typeof timeDescriptions].title}
+              {
+                timeDescriptions[
+                  timePreference as keyof typeof timeDescriptions
+                ].title
+              }
             </p>
           </motion.div>
 
@@ -86,11 +92,15 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
             className="space-y-4 absolute w-full pt-6"
           >
             <p className="text-xl text-gray-300 max-w-sm mx-auto">
-              {timeDescriptions[timePreference as keyof typeof timeDescriptions].description}
+              {
+                timeDescriptions[
+                  timePreference as keyof typeof timeDescriptions
+                ].description
+              }
             </p>
             <div className="mt-8 space-y-3">
               {timeSlots.map((slot, index) => (
-                <motion.div 
+                <motion.div
                   key={slot.label}
                   className="flex items-center justify-between gap-2"
                   initial={{ opacity: 0, x: -20 }}
@@ -104,7 +114,11 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
                     <motion.div
                       className="h-full bg-red-500/80 rounded-full"
                       initial={{ width: 0 }}
-                      animate={{ width: showSecond ? `${(slot.count / maxCount) * 100}%` : 0 }}
+                      animate={{
+                        width: showSecond
+                          ? `${(slot.count / maxCount) * 100}%`
+                          : 0,
+                      }}
                       transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
                     />
                   </div>
@@ -122,10 +136,12 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
           src="/vertical/red-bottom.png"
           alt="Bottom decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
       </div>
     </div>
   );
-} 
+}

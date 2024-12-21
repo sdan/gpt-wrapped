@@ -34,6 +34,8 @@ export default function TotalStatsPage({ stats }: TotalStatsPageProps) {
           src="/rigid/red-top.png"
           alt="Top decorative pattern"
           fill
+          unoptimized
+          crossOrigin="anonymous"
           className="object-cover"
           priority
         />
@@ -44,7 +46,10 @@ export default function TotalStatsPage({ stats }: TotalStatsPageProps) {
             src="/welcome/left.png"
             alt="Left decorative pattern"
             fill
-            className="object-contain opacity-50"
+            unoptimized
+            crossOrigin="anonymous"
+            className="object-cover opacity-75"
+            priority
           />
         </div>
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-48">
@@ -52,7 +57,10 @@ export default function TotalStatsPage({ stats }: TotalStatsPageProps) {
             src="/welcome/right.png"
             alt="Right decorative pattern"
             fill
-            className="object-contain opacity-50"
+            className="object-cover opacity-75"
+            unoptimized
+            crossOrigin="anonymous"
+            priority
           />
         </div>
 

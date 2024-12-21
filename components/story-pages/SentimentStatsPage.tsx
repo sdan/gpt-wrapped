@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface SentimentStatsPageProps {
   stats: {
@@ -36,23 +36,30 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
   };
 
   const getRatio = () => {
-    const ratio = stats.sentiment.gratitudeCount / (stats.sentiment.swearCount || 1);
+    const ratio =
+      stats.sentiment.gratitudeCount / (stats.sentiment.swearCount || 1);
     if (ratio === Infinity) return "∞";
     return ratio.toFixed(1);
   };
 
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/4 relative flex items-center justify-center">
-        <div className="w-full h-full">
-          <Image
-            src="/rigid/red-top.png"
-            alt="Top decorative pattern"
-            width={1080}
-            height={480}
-            className="w-full h-full object-cover"
-            priority
-          />
+      <div className="w-full h-1/4 relative">
+        <Image
+          src="/rigid/red-top.png"
+          alt="Top decorative pattern"
+          fill
+          unoptimized
+          crossOrigin="anonymous"
+          className="object-cover"
+          priority
+        />
+        <div
+          id="watermark"
+          style={{ display: 'none' }}
+          className="absolute top-0 left-0 z-20 p-2 text-white text-xs pointer-events-none"
+        >
+          gpt-wrapped.rajan.sh
         </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center relative">
@@ -62,7 +69,9 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">You were mean to ChatGPT</p>
+            <p className="text-xl text-gray-400 mb-3">
+              You were mean to ChatGPT
+            </p>
             <p className="text-7xl font-bold text-red-400">
               {stats.sentiment.swearCount}
             </p>
@@ -86,23 +95,23 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
               {getGratitudeComment(stats.sentiment.gratitudeCount)}
             </p>
             <p className="text-lg text-gray-500 mt-4 text-balance">
-              That&apos;s a gratitude-to-swearing ratio of {getRatio()}! You&apos;re safe, for now.
+              That&apos;s a gratitude-to-swearing ratio of {getRatio()}!
+              You&apos;re safe, for now.
             </p>
           </motion.div>
         </div>
       </div>
-      <div className="w-full h-1/4 relative flex items-center justify-center">
-        <div className="w-full h-full">
-          <Image
-            src="/rigid/red-bottom.png"
-            alt="Bottom decorative pattern"
-            width={1080}
-            height={480}
-            className="w-full h-full object-cover"
-            priority
-          />
-        </div>
+      <div className="w-full h-1/4 relative">
+        <Image
+          src="/rigid/red-bottom.png"
+          alt="Bottom decorative pattern"
+          fill
+          unoptimized
+          crossOrigin="anonymous"
+          className="object-cover"
+          priority
+        />
       </div>
     </div>
   );
-} 
+}
