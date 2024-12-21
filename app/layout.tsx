@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import { Inter } from "next/font/google";

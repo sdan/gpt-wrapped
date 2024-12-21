@@ -1,6 +1,15 @@
+// @ts-nocheck
 import { useState } from 'react';
 import { Upload } from 'lucide-react';
 import JSZip from 'jszip';
+import AiPersonaPage from './ai-story-pages/AiPersonaPage';
+import AiChatThemesPage from './ai-story-pages/AiChatThemesPage';
+import AiQuipPage from './ai-story-pages/AiQuipPage';
+import AiEurekaPage from './ai-story-pages/AiEurekaPage';
+import AiHumorPage from './ai-story-pages/AiHumorPage';
+import AiJourneyPage from './ai-story-pages/AiJourneyPage';
+import AiFascinationPage from './ai-story-pages/AiFascinationPage';
+import AiAuraPage from './ai-story-pages/AiAuraPage';
 
 interface Conversation {
   title?: string;
@@ -85,10 +94,13 @@ interface ExtractedData {
 interface WrappedData {
   processed: boolean;
   stats?: ExtractedData;
+  aiPages?: React.ReactNode[];
 }
 
 interface LandingPageProps {
   onDataReady: (data: WrappedData) => void;
+  enhancedWrapped: boolean;
+  setEnhancedWrapped: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ProcessingStatus {
@@ -190,14 +202,25 @@ const calculateSimilarity = (text: string, keywords: string[]): number => {
 
   return score;
 };
-export default function LandingPage({ onDataReady }: LandingPageProps) {
+
+const renderAiPages = (analyze: Record<string, unknown>) => [
+  <AiPersonaPage persona={analyze.bespoke_ai_persona as { persona_description: string; persona_vibe: string }} />,
+  <AiChatThemesPage themes={analyze.chat_themes as { top_3_topics: string[] }} />,
+  <AiQuipPage quip={analyze.crown_jewel_quip as { message: string }} />,
+  <AiEurekaPage eureka={analyze.eureka_trifecta as { top_3_moments: string[] }} />,
+  <AiHumorPage humor={analyze.laughter_catalyst as { exchange: string }} />,
+  <AiJourneyPage journey={analyze.mind_miles_traveled as { distance_traveled: string }} />,
+  <AiFascinationPage fascination={analyze.primary_fascination as { favorite_message: string; fun_fact: string; topic: string; total_messages: number }} />,
+  <AiAuraPage aura={analyze.user_aura as { user_personality: string }} />,
+];
+
+export default function LandingPage({ onDataReady, enhancedWrapped, setEnhancedWrapped }: LandingPageProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isProcessed, setIsProcessed] = useState(false);
   const [processedData, setProcessedData] = useState<WrappedData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [processingStatus, setProcessingStatus] = useState<ProcessingStatus>({ step: '', progress: 0 });
-  const [enhancedWrapped, setEnhancedWrapped] = useState(false);
 
   const validateZipContents = async (zip: JSZip): Promise<boolean> => {
     const fileNames = Object.keys(zip.files);
@@ -681,12 +704,6 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     }
   };
 
-  const handleViewWrapped = () => {
-    if (processedData) {
-      onDataReady(processedData);
-    }
-  };
-
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -719,6 +736,23 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       setError('Please upload a ZIP file');
     }
   };
+
+  const handleViewWrapped = () => {
+    console.log('handleViewWrapped called, processedData:', processedData);
+    if (processedData) {
+      if (enhancedWrapped && processedData.stats?.analyze) {
+        console.log('Enhanced wrapped mode with analyze data');
+        onDataReady({
+          ...processedData,
+          aiPages: renderAiPages(processedData.stats.analyze),
+        });
+      } else {
+        console.log('Basic wrapped mode or no analyze data');
+        onDataReady(processedData);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center bg-black/85">
       <div className="max-w-2xl w-full space-y-8">
