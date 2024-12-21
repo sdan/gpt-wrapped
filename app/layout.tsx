@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description: 'Wrap up 2024 with a wrapper',
     images: [
       {
-        url: 'http://localhost:3000/og.png',
+        url: 'https://gpt-wrapped.com/og.png',
         width: 1200,
         height: 630,
         alt: 'ChatGPT Wrapped',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title: 'ChatGPT Wrapped',
     description: 'Wrap up your year with a wrapper',
     creator: '@_rajanagarwal',
-    images: ['http://localhost:3000/og.png'],
+    images: ['https://gpt-wrapped.com/og.png'],
   },
   icons: {
     icon: '/favicon.ico',
