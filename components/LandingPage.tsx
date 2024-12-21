@@ -59,6 +59,9 @@ interface ExtractedData {
       [key: string]: number;
     };
   };
+  averageConversationLength: number;
+  linkCount: number;
+  voiceCount: number;
 }
 
 interface WrappedData {
@@ -221,6 +224,9 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
     const titles: string[] = [];
     let swearCount = 0;
     let gratitudeCount = 0;
+    let totalDuration = 0;
+    let linkCount = 0;
+    let voiceCount = 0;
     
     // Swear words and variations
     const swearPatterns = [
@@ -233,7 +239,8 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       /\bc+r+a+p+\w*\b/i,
       /\bh+e+l+l+\b/i,
       /\bd+i+c+k+\w*\b/i,
-      /\bc+u+n+t+\w*\b/i
+      /\bc+u+n+t+\w*\b/i,
+      /\bw+r+o+n+g+\b/i
     ];
 
     // Gratitude expressions
@@ -243,9 +250,9 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       /\bgrateful\b/i,
       /\bthank(?:ful|fully)\b/i,
       /(?:^|\s)ty(?:\s|$)/i,
-      /(?:^|\s)thx(?:\s|$)/i
+      /(?:^|\s)thx(?:\s|$)/i,
+      /\b(?:please|pls|plz|plzz|plzzz)\b/i
     ];
-    
     // Initialize topic scores
     const topicScores: { [key: string]: number } = {};
     Object.keys(TOPIC_KEYWORDS).forEach(topic => {
@@ -310,7 +317,37 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
           const messages = Object.values(conversation.mapping || {});
           let conversationMessages = 0;
 
+          // Calculate conversation duration
+          if (messages.length > 0) {
+            const timestamps = messages
+              .map(msg => msg.message?.create_time)
+              .filter((time): time is number => time !== undefined)
+              .sort();
+            
+            if (timestamps.length >= 2) {
+              const duration = timestamps[timestamps.length - 1] - timestamps[0];
+              totalDuration += duration;
+            }
+          }
+
+          // Count links and voice messages
           messages.forEach((node) => {
+            if (node.message?.content?.parts?.[0]) {
+              const content = node.message.content.parts[0];
+              if (typeof content === 'string') {
+                // Count links (URLs)
+                const urlCount = (content.match(/https?:\/\/[^\s]+/g) || []).length;
+                linkCount += urlCount;
+
+                // Check for voice indicators
+                if (content.includes('Transcribed voice message') || 
+                    content.includes('Voice message transcript') ||
+                    content.includes('Audio transcript')) {
+                  voiceCount++;
+                }
+              }
+            }
+
             if (node.message?.author?.role && node.message.create_time) {
               const messageDate = new Date(node.message.create_time * 1000);
               if (messageDate.getFullYear() === 2024) {
@@ -432,7 +469,10 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
       topics: {
         topCategory,
         distribution
-      }
+      },
+      averageConversationLength: totalDuration / totalConversations,
+      linkCount,
+      voiceCount,
     };
   };
 
@@ -619,7 +659,7 @@ export default function LandingPage({ onDataReady }: LandingPageProps) {
             <div className="space-y-4 bg-white/5 p-6 rounded-lg text-sm text-gray-400">
               <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
               <ul className="space-y-2 list-disc list-inside">
-                <li>This is a fun, unofficial project not affiliated with or endorsed by OpenAI</li>
+                <li>This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor Spotify.</li>
                 <li>We do not store any of your data - all processing happens locally in your browser</li>
                 <li>The comments and analysis are meant to be playful and humorous</li>
                 <li>Your data never leaves your device and is discarded after analysis</li>

@@ -8,6 +8,7 @@ import StreakStatsPage from '../components/story-pages/StreakStatsPage';
 import TimeStatsPage from '../components/story-pages/TimeStatsPage';
 import SentimentStatsPage from '../components/story-pages/SentimentStatsPage';
 import TopicStatsPage from '../components/story-pages/TopicStatsPage';
+import SummaryStatsPage from '../components/story-pages/SummaryStatsPage';
 import LandingPage from '../components/LandingPage';
 
 const Stories = dynamic(() => import('../components/Stories'), { ssr: false })
@@ -52,6 +53,9 @@ interface WrappedData {
         [key: string]: number;
       };
     };
+    averageConversationLength: number;
+    linkCount: number;
+    voiceCount: number;
   };
 }
 
@@ -82,6 +86,9 @@ export default function Home() {
     },
     {
       component: data?.stats ? <TopicStatsPage stats={data.stats} /> : null,
+    },
+    {
+      component: data?.stats ? <SummaryStatsPage stats={data.stats} /> : null,
     },
   ];
 

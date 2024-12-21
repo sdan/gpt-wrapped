@@ -43,14 +43,17 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/4 relative">
-        <Image
-          src="/rigid/red-top.png"
-          alt="Top decorative pattern"
-          fill
-          className="object-cover"
-          priority
-        />
+      <div className="w-full h-1/4 relative flex items-center justify-center">
+        <div className="w-full h-full">
+          <Image
+            src="/rigid/red-top.png"
+            alt="Top decorative pattern"
+            width={1080}
+            height={480}
+            className="w-full h-full object-cover"
+            priority
+          />
+        </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center relative">
         <div className="text-center relative z-10 w-full px-8 space-y-12">
@@ -59,7 +62,7 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">You swore at ChatGPT</p>
+            <p className="text-xl text-gray-400 mb-3">You were mean to ChatGPT</p>
             <p className="text-7xl font-bold text-red-400">
               {stats.sentiment.swearCount}
             </p>
@@ -74,7 +77,7 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
             animate={{ opacity: showSecond ? 1 : 0, y: showSecond ? 0 : 20 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">But you also said thanks</p>
+            <p className="text-xl text-gray-400 mb-3">But you were also nice</p>
             <p className="text-7xl font-bold text-green-400">
               {stats.sentiment.gratitudeCount}
             </p>
@@ -88,14 +91,17 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
           </motion.div>
         </div>
       </div>
-      <div className="w-full h-1/4 relative">
-        <Image
-          src="/rigid/red-bottom.png"
-          alt="Bottom decorative pattern"
-          fill
-          className="object-cover"
-          priority
-        />
+      <div className="w-full h-1/4 relative flex items-center justify-center">
+        <div className="w-full h-full">
+          <Image
+            src="/rigid/red-bottom.png"
+            alt="Bottom decorative pattern"
+            width={1080}
+            height={480}
+            className="w-full h-full object-cover"
+            priority
+          />
+        </div>
       </div>
     </div>
   );

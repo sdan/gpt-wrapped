@@ -58,7 +58,7 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
     <div className="h-full flex flex-col">
       <div className="w-full h-1/4 relative">
         <Image
-          src="/faded/red-top.png"
+          src="/vertical/red-top.png"
           alt="Top decorative pattern"
           fill
           className="object-cover"
@@ -119,7 +119,7 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
       </div>
       <div className="w-full h-1/4 relative">
         <Image
-          src="/faded/red-bottom.png"
+          src="/vertical/red-bottom.png"
           alt="Bottom decorative pattern"
           fill
           className="object-cover"
