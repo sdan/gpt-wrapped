@@ -1,0 +1,60 @@
+(async function() {
+    if (!('indexedDB' in window)) {
+      console.error('IndexedDB is not supported by this browser.');
+      return;
+    }
+  
+    // Get a list of all databases (Chrome/Edge/Firefox newer versions)
+    const dbs = await indexedDB.databases();
+  
+    const allData = {};
+  
+    for (const dbInfo of dbs) {
+      const dbName = dbInfo.name;
+      if (!dbName) continue;
+  
+      const openRequest = indexedDB.open(dbName, dbInfo.version);
+      const db = await new Promise((resolve, reject) => {
+        openRequest.onsuccess = () => resolve(openRequest.result);
+        openRequest.onerror = () => reject(openRequest.error);
+      });
+  
+      // Start a transaction with all object stores in read-only mode
+      const tx = db.transaction(db.objectStoreNames, 'readonly');
+      const dbData = {};
+  
+      await Promise.all(Array.from(db.objectStoreNames).map(storeName => {
+        return new Promise((resolve, reject) => {
+          const store = tx.objectStore(storeName);
+          const getAllReq = store.getAll();
+          getAllReq.onsuccess = () => {
+            dbData[storeName] = getAllReq.result;
+            resolve();
+          };
+          getAllReq.onerror = () => reject(getAllReq.error);
+        });
+      }));
+  
+      // Close the database connection
+      db.close();
+  
+      allData[dbName] = dbData;
+    }
+  
+    // Convert all data to JSON
+    const jsonData = JSON.stringify(allData, null, 2);
+  
+    // Create a temporary link to trigger a download
+    const blob = new Blob([jsonData], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'chatgptwrapped.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  
+    console.log('Download initiated');
+  })();
+  

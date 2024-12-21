@@ -34,3 +34,29 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+----
+
+## Card 1 - Usage Statistics
+- Total number of messages sent to ChatGPT (Python)
+- Total words typed to ChatGPT (Python)
+- Most active day chatting with ChatGPT (Python, pandas)
+- Time of day you chat with ChatGPT most often (Python)
+- Number of images, code snippets, and URLs shared (Python)
+
+## Card 2 - Topic Deep Dive
+- Top 3 most discussed topics (GPT-4)
+- Breakdown of message types (GPT-4)
+- For your #1 topic:
+  - Total messages on the topic (Python)
+  - Favorite message on the topic (GPT-4)
+  - Fun fact about the topic discussion (GPT-4)
+
+## Card 3 - ChatGPT Interaction
+- ChatGPT's favorite message from you (GPT-4)
+- Funniest exchange with ChatGPT (GPT-4)
+- Creativity Sparks: Top 3 moments of inspiration (GPT-4)
+- Intellectual Mileage: Distance traveled in conversations (GPT-4)
+- ChatGPT's persona tailored to your interactions (GPT-4)
