@@ -46,7 +46,7 @@ export default function Story({ component, isPaused, onTogglePause }: StoryProps
   return (
     <div
       id="story-container"
-      className="relative h-full w-full bg-black flex flex-col"
+      className="relative h-full w-full flex flex-col"
       style={{ aspectRatio: '9/16' }}
     >
       {/* Add a global watermark here, hidden by default */}
