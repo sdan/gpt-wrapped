@@ -28,8 +28,8 @@ export default function AiQuipPage({ quip }: AiQuipPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">Your Crown Jewel Quip</p>
-            <p className="text-4xl font-bold text-blue-400 leading-snug">
+            <p className="text-xl text-gray-400 mb-3">What ChatGPT Thinks of you</p>
+            <p className="text-4xl font-bold text-yellow-300 leading-snug text-balance">
               &ldquo;{quip.message}&rdquo;
             </p>
           </motion.div>

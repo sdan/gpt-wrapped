@@ -15,7 +15,7 @@ export default function AiFascinationPage({ fascination }: AiFascinationPageProp
     <div className="h-full flex flex-col">
       <div className="w-full h-1/4 relative">
         <Image
-          src="/corners/top-left.png"
+          src="/faded/red-top.png"
           alt="Top decorative pattern"
           fill
           unoptimized
@@ -32,7 +32,7 @@ export default function AiFascinationPage({ fascination }: AiFascinationPageProp
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your Primary Fascination</p>
-            <p className="text-5xl font-bold text-blue-400 leading-tight">
+            <p className="text-4xl font-bold text-red-400 leading-tight text-balance">
               {fascination.topic}
             </p>
             <p className="text-2xl text-gray-300 mt-2">
@@ -46,7 +46,7 @@ export default function AiFascinationPage({ fascination }: AiFascinationPageProp
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <p className="text-xl text-gray-400 mb-3">Favorite Message</p>
-            <p className="text-3xl text-green-400 leading-snug">
+            <p className="text-3xl text-red-400 leading-snug">
               &ldquo;{fascination.favorite_message}&rdquo;
             </p>
           </motion.div>
@@ -56,8 +56,8 @@ export default function AiFascinationPage({ fascination }: AiFascinationPageProp
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            <p className="text-xl text-gray-400 mb-3">Fun Fact</p>
-            <p className="text-3xl text-yellow-400 leading-snug">
+            <p className="text-xl text-gray-400 mb-3">What we noticed</p>
+            <p className="text-3xl text-red-400 leading-snug text-balance">
               {fascination.fun_fact}
             </p>
           </motion.div>

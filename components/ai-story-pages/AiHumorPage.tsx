@@ -28,9 +28,9 @@ export default function AiHumorPage({ humor }: AiHumorPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">Your Laughter Catalyst</p>
-            <p className="text-4xl font-bold text-blue-400 leading-snug">
-              &ldquo;{humor.exchange}&rdquo; 😂
+            <p className="text-xl text-gray-400 mb-3">What ChatGPT REALLY Thinks of you</p>
+            <p className="text-4xl font-bold text-red-400 leading-snug text-balance">
+              &ldquo;{humor.exchange}&rdquo;
             </p>
           </motion.div>
         </div>

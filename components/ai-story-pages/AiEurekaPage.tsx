@@ -28,7 +28,7 @@ export default function AiEurekaPage({ eureka }: AiEurekaPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">Your Eureka Trifecta</p>
+            <p className="text-xl text-gray-400 mb-3">What has been interesting to you</p>
             <div className="space-y-4">
               {eureka.top_3_moments.map((moment, index) => (
                 <motion.p
@@ -36,7 +36,7 @@ export default function AiEurekaPage({ eureka }: AiEurekaPageProps) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 * index }}
-                  className="text-3xl font-bold text-green-400"
+                  className="text-3xl font-bold text-red-400"
                 >
                   {moment}
                 </motion.p>

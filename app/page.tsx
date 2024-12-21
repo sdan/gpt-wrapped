@@ -39,14 +39,19 @@ export default function Home() {
   const stories = enhancedWrapped && data?.stats?.analyze
     ? [
         { component: <AIWelcomePage key="AIWelcomePage" /> },
+        { component: data?.stats ? <TotalStatsPage key="TotalStatsPage" stats={data.stats} /> : null },
         { component: <AiPersonaPage key="AiPersonaPage" persona={data.stats.analyze.bespoke_ai_persona} /> },
+        { component: data?.stats ? <StreakStatsPage key="StreakStatsPage" stats={data.stats} /> : null },
+        { component: data?.stats ? <SentimentStatsPage key="SentimentStatsPage" stats={data.stats} /> : null },
         { component: <AiChatThemesPage key="AiChatThemesPage" themes={data.stats.analyze.chat_themes} /> },
+        { component: data?.stats ? <TimeStatsPage key="TimeStatsPage" stats={data.stats} /> : null },
         { component: <AiQuipPage key="AiQuipPage" quip={data.stats.analyze.crown_jewel_quip} /> },
-        { component: <AiEurekaPage key="AiEurekaPage" eureka={data.stats.analyze.eureka_trifecta} /> },
         { component: <AiHumorPage key="AiHumorPage" humor={data.stats.analyze.laughter_catalyst} /> },
-        { component: <AiJourneyPage key="AiJourneyPage" journey={data.stats.analyze.mind_miles_traveled} /> },
+        { component: <AiEurekaPage key="AiEurekaPage" eureka={data.stats.analyze.eureka_trifecta} /> },
+        // { component: <AiJourneyPage key="AiJourneyPage" journey={data.stats.analyze.mind_miles_traveled} /> },
         { component: <AiFascinationPage key="AiFascinationPage" fascination={data.stats.analyze.primary_fascination} /> },
         { component: <AiAuraPage key="AiAuraPage" aura={data.stats.analyze.user_aura} /> },
+        { component: data?.stats ? <SummaryStatsPage key="SummaryStatsPage" stats={data.stats} /> : null },
       ]
     : [
         { component: <WelcomePage key="WelcomePage" /> },

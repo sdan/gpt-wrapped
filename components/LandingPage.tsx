@@ -272,22 +272,6 @@ export default function LandingPage({
       return false;
     }
 
-    // Check if there are any non-JSON files (except chat.html and system files)
-    const invalidFiles = fileNames.filter(file => {
-      // Skip directories, system files, and allowed files
-      if (file.endsWith('/')) return false;
-      if (file.startsWith('__MACOSX/')) return false;
-      if (file.includes('.DS_Store')) return false;
-      if (file.endsWith('chat.html')) return false;
-      return !file.endsWith('.json');
-    });
-
-    if (invalidFiles.length > 0) {
-      console.log('Invalid files found:', invalidFiles);
-      setError(`ZIP contains unexpected non-JSON files: ${invalidFiles.join(', ')}`);
-      return false;
-    }
-
     return true;
   };
 
