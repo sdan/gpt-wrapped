@@ -10,9 +10,9 @@ interface AiAuraPageProps {
 export default function AiAuraPage({ aura }: AiAuraPageProps) {
   return (
     <div className="h-full flex flex-col">
-      <div className="w-full h-1/4 relative">
+      <div className="w-full h-1/5 relative">
         <Image
-          src="/corners/top-right.png"
+          src="/rigid/orange-top.png"
           alt="Top decorative pattern"
           fill
           unoptimized
@@ -29,15 +29,15 @@ export default function AiAuraPage({ aura }: AiAuraPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your User Aura</p>
-            <p className="text-5xl font-bold text-purple-400 leading-snug">
-              {aura.user_personality} ✨
+            <p className="text-4xl font-bold text-orange-400 leading-snug">
+              {aura.user_personality}
             </p>
           </motion.div>
         </div>
       </div>
-      <div className="w-full h-1/4 relative">
+      <div className="w-full h-1/5 relative">
         <Image
-          src="/corners/bottom-right.png"
+          src="/rigid/orange-bottom.png"
           alt="Bottom decorative pattern"
           fill
           unoptimized

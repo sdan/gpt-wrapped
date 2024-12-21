@@ -12,7 +12,7 @@ export default function AiQuipPage({ quip }: AiQuipPageProps) {
     <div className="h-full flex flex-col">
       <div className="w-full h-1/4 relative">
         <Image
-          src="/corners/top-right.png"
+          src="/descending/top.png"
           alt="Top decorative pattern"
           fill
           unoptimized
@@ -28,7 +28,7 @@ export default function AiQuipPage({ quip }: AiQuipPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-xl text-gray-400 mb-3">What ChatGPT Thinks of you</p>
+            <p className="text-xl text-gray-400 mb-3">What ChatGPT noticed</p>
             <p className="text-4xl font-bold text-yellow-300 leading-snug text-balance">
               &ldquo;{quip.message}&rdquo;
             </p>

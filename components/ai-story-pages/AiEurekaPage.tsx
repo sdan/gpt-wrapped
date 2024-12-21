@@ -12,7 +12,7 @@ export default function AiEurekaPage({ eureka }: AiEurekaPageProps) {
     <div className="h-full flex flex-col">
       <div className="w-full h-1/4 relative">
         <Image
-          src="/corners/top-left.png"
+          src="/rigid/green-top.png"
           alt="Top decorative pattern"
           fill
           unoptimized
@@ -36,7 +36,7 @@ export default function AiEurekaPage({ eureka }: AiEurekaPageProps) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 * index }}
-                  className="text-3xl font-bold text-red-400"
+                  className="text-3xl font-bold text-green-400 text-balance"
                 >
                   {moment}
                 </motion.p>
@@ -47,7 +47,7 @@ export default function AiEurekaPage({ eureka }: AiEurekaPageProps) {
       </div>
       <div className="w-full h-1/4 relative">
         <Image
-          src="/faded/red-bottom.png"
+          src="/rigid/green-bottom.png"
           alt="Bottom decorative pattern"
           fill
           unoptimized

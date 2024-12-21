@@ -19,7 +19,7 @@ export default function WelcomePage() {
           <h1 className="text-4xl font-bold text-white mb-4">
             ChatGPT Wrapped
           </h1>
-          <p className="text-xl text-gray-300">Your AI journey in 2024</p>
+          <p className="text-xl text-gray-300">The 13th Day of Christmas</p>
         </div>
       </div>
       <div className="w-full h-1/4 relative">

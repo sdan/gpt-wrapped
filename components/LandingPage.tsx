@@ -801,7 +801,7 @@ export default function LandingPage({
                   </p>
                   <p className="text-sm text-gray-400">
                     {isLoading
-                      ? `${processingStatus.progress}% complete`
+                      ? `${processingStatus.progress.toFixed(1)}% complete`
                       : 'or click to browse'}
                   </p>
                   {error && <p className="text-red-400 text-sm">{error}</p>}

@@ -50,6 +50,7 @@ export default function Home() {
         { component: <AiEurekaPage key="AiEurekaPage" eureka={data.stats.analyze.eureka_trifecta} /> },
         // { component: <AiJourneyPage key="AiJourneyPage" journey={data.stats.analyze.mind_miles_traveled} /> },
         { component: <AiFascinationPage key="AiFascinationPage" fascination={data.stats.analyze.primary_fascination} /> },
+        { component: data?.stats ? <TopicStatsPage key="TopicStatsPage" stats={data.stats} /> : null },
         { component: <AiAuraPage key="AiAuraPage" aura={data.stats.analyze.user_aura} /> },
         { component: data?.stats ? <SummaryStatsPage key="SummaryStatsPage" stats={data.stats} /> : null },
       ]

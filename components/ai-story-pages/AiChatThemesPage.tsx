@@ -12,7 +12,7 @@ export default function AiChatThemesPage({ themes }: AiChatThemesPageProps) {
     <div className="h-full flex flex-col">
       <div className="w-full h-1/4 relative">
         <Image
-          src="/corners/top-left.png"
+          src="/rigid/purple-top.png"
           alt="Top decorative pattern"
           fill
           unoptimized
@@ -47,7 +47,7 @@ export default function AiChatThemesPage({ themes }: AiChatThemesPageProps) {
       </div>
       <div className="w-full h-1/4 relative">
         <Image
-          src="/corners/bottom-left.png"
+          src="/rigid/purple-bottom.png"
           alt="Bottom decorative pattern"
           fill
           unoptimized

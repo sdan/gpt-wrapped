@@ -30,7 +30,7 @@ export default function AiJourneyPage({ journey }: AiJourneyPageProps) {
           >
             <p className="text-xl text-gray-400 mb-3">Your Mind Miles Traveled</p>
             <p className="text-5xl font-bold text-blue-400 leading-snug">
-              {journey.distance_traveled} 🧠🚀
+              {journey.distance_traveled}
             </p>
           </motion.div>
         </div>

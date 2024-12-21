@@ -55,9 +55,9 @@ export default function Story({ component, isPaused, onTogglePause }: StoryProps
       <div
         id="watermark"
         style={{ display: 'none' }}
-        className="absolute top-2 left-2 z-[9999] p-2 text-white text-xs pointer-events-none"
+        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-[9999] p-2 text-white text-xs pointer-events-none"
       >
-        gpt-wrapped.rajan.sh
+        gpt-wrapped.com
       </div>
 
       <button

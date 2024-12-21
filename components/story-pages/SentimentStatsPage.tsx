@@ -54,13 +54,6 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
           className="object-cover"
           priority
         />
-        <div
-          id="watermark"
-          style={{ display: 'none' }}
-          className="absolute top-0 left-0 z-20 p-2 text-white text-xs pointer-events-none"
-        >
-          gpt-wrapped.rajan.sh
-        </div>
       </div>
       <div className="flex-1 flex flex-col items-center justify-center relative">
         <div className="text-center relative z-10 w-full px-8 space-y-12">
@@ -95,7 +88,7 @@ export default function SentimentStatsPage({ stats }: SentimentStatsPageProps) {
               {getGratitudeComment(stats.sentiment.gratitudeCount)}
             </p>
             <p className="text-lg text-gray-500 mt-4 text-balance">
-              That&apos;s a gratitude-to-swearing ratio of {getRatio()}!
+              That&apos;s a ratio of {getRatio()}!
               You&apos;re safe, for now.
             </p>
           </motion.div>

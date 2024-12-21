@@ -13,7 +13,7 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
     <div className="h-full flex flex-col">
       <div className="w-full h-1/4 relative">
         <Image
-          src="/descending/top.png"
+          src="/vertical/blue-top.png"
           alt="Top decorative pattern"
           fill
           unoptimized
@@ -30,7 +30,7 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your AI Persona</p>
-            <p className="text-4xl font-bold text-purple-400 leading-tight text-balance">
+            <p className="text-4xl font-bold text-blue-300 leading-tight text-balance">
               {persona.persona_description}
             </p>
           </motion.div>
@@ -41,7 +41,7 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <p className="text-xl text-gray-400 mb-3">Vibe Check</p>
-            <p className="text-3xl text-purple-400 leading-snug text-balance">
+            <p className="text-3xl text-blue-300 leading-snug text-balance">
               {persona.persona_vibe}  
             </p>
           </motion.div>
@@ -49,7 +49,7 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
       </div>
       <div className="w-full h-1/4 relative">
         <Image
-          src="/descending/bottom.png"
+          src="/vertical/blue-bottom.png"
           alt="Bottom decorative pattern"
           fill
           unoptimized

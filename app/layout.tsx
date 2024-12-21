@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import localFont from "next/font/local";
@@ -17,29 +16,50 @@ const interSemiBold = localFont({
 
 export const metadata: Metadata = {
   title: "ChatGPT Wrapped",
-  description: "Visualize your AI journey in 2024",
-  metadataBase: new URL('https://gpt-wrapped.rajan.sh'),
+  description: "Wrap up your year with a wrapper",
+  metadataBase: new URL('https://gpt-wrapped.com'),
+  keywords: ["ChatGPT", "Wrapped", "AI", "OpenAI", "Year in Review"],
+  authors: [
+    { name: "Rajan Agarwal" },
+    { name: "Surya Dantuluri" }
+  ],
   openGraph: {
-    title: "ChatGPT Wrapped",
-    description: "Visualize your AI journey in 2024",
-    url: 'https://gpt-wrapped.rajan.sh',
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://gpt-wrapped.com',
     siteName: 'ChatGPT Wrapped',
+    title: 'ChatGPT Wrapped',
+    description: 'Wrap up 2024 with a wrapper',
     images: [
       {
-        url: "https://gpt-wrapped.rajan.sh/og.png",
+        url: 'http://localhost:3000/og.png',
         width: 1200,
         height: 630,
-        alt: "ChatGPT Wrapped",
+        alt: 'ChatGPT Wrapped',
       },
     ],
-    type: 'website',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "ChatGPT Wrapped",
-    description: "Visualize your AI journey in 2024",
-    creator: "@_rajanagarwal",
-    images: ["https://gpt-wrapped.rajan.sh/og.png"],
+    card: 'summary_large_image',
+    title: 'ChatGPT Wrapped',
+    description: 'Wrap up your year with a wrapper',
+    creator: '@_rajanagarwal',
+    images: ['http://localhost:3000/og.png'],
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -50,6 +70,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fira.variable} ${interSemiBold.variable}`}>
+      <head>
+        <meta property="og:image" content="https://gpt-wrapped.com/og.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:image" content="https://gpt-wrapped.com/og.png" />
+      </head>
       <body className="font-sans relative">
         <video
           autoPlay
