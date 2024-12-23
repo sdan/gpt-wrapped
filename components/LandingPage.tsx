@@ -851,7 +851,7 @@ export default function LandingPage({
               <ul className="space-y-2 list-disc list-inside">
                 <li>
                   This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor
-                  Spotify.
+                  Spotify. The code is open source and available on <a href="https://github.com/sdan/gpt-wrapped" className="text-blue-400 hover:underline">GitHub</a>.
                 </li>
                 <li>
                   We do not store any of your data - all processing happens locally in your browser
