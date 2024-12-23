@@ -623,100 +623,93 @@ export default function LandingPage({
     setIsLoading(true);
     setIsProcessed(false);
     setError(null);
-    setProcessingStatus({ step: 'Reading ZIP file...', progress: 25 });
+    setProcessingStatus({ step: 'Reading file...', progress: 25 });
 
     try {
-      // Load and validate ZIP
-      const zip = new JSZip();
-      console.log('Loading ZIP file...');
-      const zipContents = await zip.loadAsync(file);
-      console.log('ZIP file loaded successfully');
-      
-      if (!(await validateZipContents(zip))) {
-        setIsLoading(false);
-        return;
-      }
+      let conversationsJson: string;
 
-      // Read conversations.json
-      console.log('Reading conversations.json...');
-      
-      // Find conversations.json in any directory
-      const conversationsFile = Object.values(zipContents.files).find(file => file.name.endsWith('conversations.json'));
-      if (!conversationsFile) {
-        throw new Error('Could not read conversations.json');
-      }
-
-      setProcessingStatus({ step: 'Reading conversations...', progress: 50 });
-      try {
-        const conversationsJson = await conversationsFile.async('string');
-        console.log('Conversations file read successfully');
-        console.log('Parsing JSON...');
+      if (file.name.endsWith('.zip')) {
+        // Handle ZIP file
+        const zip = new JSZip();
+        console.log('Loading ZIP file...');
+        const zipContents = await zip.loadAsync(file);
+        console.log('ZIP file loaded successfully');
         
-        // Validate JSON structure
-        const parsed = JSON.parse(conversationsJson);
-        if (!Array.isArray(parsed)) {
-          throw new Error('Invalid conversations.json format: expected an array');
-        }
-        console.log(`Found ${parsed.length} conversations`);
-
-        setProcessingStatus({ step: 'Analyzing data...', progress: 75 });
-        const extractedData = await extractConversationsData(conversationsJson);
-        console.log('Data analysis complete', extractedData);
-
-        // Sample  conversations
-        const sampledConversations = await sampleConversations(conversationsJson);
-
-        // Create a new object with sampled conversations
-        const sampledData = {
-          ...extractedData,
-          conversations: sampledConversations,
-        };
-
-        // Send sampled data to /api/analyze route if enhancedWrapped is true
-        if (enhancedWrapped) {
-          try {
-            const response = await fetch('/api/analyze', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(sampledData),
-            });
-
-            if (!response.ok) {
-              throw new Error('Failed to analyze data');
-            }
-
-            const analyzeData = await response.json();
-            console.log('API route analysis:', analyzeData);
-
-            // Combine extractedData with analyzeData
-            extractedData.analyze = analyzeData;
-          } catch (error) {
-            console.error('Error sending data to /api/analyze:', error);
-            // Handle error appropriately, maybe set an error state
-          }
+        // Find conversations.json in any directory
+        const conversationsFile = Object.values(zipContents.files).find(file => file.name.endsWith('conversations.json'));
+        if (!conversationsFile) {
+          throw new Error('Could not find conversations.json in ZIP file');
         }
 
-        setProcessingStatus({ step: 'Finalizing...', progress: 90 });
-
-        const data: WrappedData = {
-          processed: true,
-          stats: extractedData
-        };
-
-        setProcessedData(data);
-        setIsProcessed(true);
-        setProcessingStatus({ step: 'Complete!', progress: 100 });
-      } catch (jsonError) {
-        console.error('Error processing conversations.json:', jsonError);
-        if (jsonError instanceof SyntaxError) {
-          setError('Invalid JSON format in conversations.json');
-        } else {
-          setError(jsonError instanceof Error ? jsonError.message : 'Error processing conversations.json');
-        }
-        return;
+        setProcessingStatus({ step: 'Reading conversations...', progress: 50 });
+        conversationsJson = await conversationsFile.async('string');
+      } else if (file.name.endsWith('.json')) {
+        // Handle JSON file directly
+        setProcessingStatus({ step: 'Reading JSON file...', progress: 50 });
+        conversationsJson = await file.text();
+      } else {
+        throw new Error('Please upload either a ZIP file or conversations.json');
       }
+
+      console.log('Conversations file read successfully');
+      console.log('Parsing JSON...');
+      
+      // Validate JSON structure
+      const parsed = JSON.parse(conversationsJson);
+      if (!Array.isArray(parsed)) {
+        throw new Error('Invalid conversations.json format: expected an array');
+      }
+      console.log(`Found ${parsed.length} conversations`);
+
+      setProcessingStatus({ step: 'Analyzing data...', progress: 75 });
+      const extractedData = await extractConversationsData(conversationsJson);
+      console.log('Data analysis complete', extractedData);
+
+      // Sample conversations
+      const sampledConversations = await sampleConversations(conversationsJson);
+
+      // Create a new object with sampled conversations
+      const sampledData = {
+        ...extractedData,
+        conversations: sampledConversations,
+      };
+
+      // Send sampled data to /api/analyze route if enhancedWrapped is true
+      if (enhancedWrapped) {
+        try {
+          const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(sampledData),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to analyze data');
+          }
+
+          const analyzeData = await response.json();
+          console.log('API route analysis:', analyzeData);
+
+          // Combine extractedData with analyzeData
+          extractedData.analyze = analyzeData;
+        } catch (error) {
+          console.error('Error sending data to /api/analyze:', error);
+          // Handle error appropriately, maybe set an error state
+        }
+      }
+
+      setProcessingStatus({ step: 'Finalizing...', progress: 90 });
+
+      const data: WrappedData = {
+        processed: true,
+        stats: extractedData
+      };
+
+      setProcessedData(data);
+      setIsProcessed(true);
+      setProcessingStatus({ step: 'Complete!', progress: 100 });
     } catch (error: unknown) {
       console.error('Error processing file:', error);
       setError(error instanceof Error ? error.message : 'Error processing file. Please try again.');
@@ -786,10 +779,10 @@ export default function LandingPage({
                 setIsDragging(false)
                 setError(null)
                 const file = e.dataTransfer.files[0]
-                if (file && file.name.endsWith('.zip')) {
+                if (file && (file.name.endsWith('.zip') || file.name.endsWith('.json'))) {
                   await processFile(file)
                 } else {
-                  setError('Please upload a ZIP file')
+                  setError('Please upload either a ZIP file or conversations.json')
                 }
               }}
             >
@@ -797,7 +790,7 @@ export default function LandingPage({
                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
                 <div className="space-y-2">
                   <p className="text-lg">
-                    {isLoading ? processingStatus.step : 'Drop your ZIP file here'}
+                    {isLoading ? processingStatus.step : 'Drop your ZIP or conversations.json file here'}
                   </p>
                   <p className="text-sm text-gray-400">
                     {isLoading
@@ -826,14 +819,14 @@ export default function LandingPage({
                 </label>
                 <input
                   type="file"
-                  accept=".zip"
+                  accept=".zip,.json"
                   onChange={async (e) => {
                     setError(null)
                     const pickedFile = e.target.files?.[0]
-                    if (pickedFile && pickedFile.name.endsWith('.zip')) {
+                    if (pickedFile && (pickedFile.name.endsWith('.zip') || pickedFile.name.endsWith('.json'))) {
                       await processFile(pickedFile)
                     } else {
-                      setError('Please upload a ZIP file')
+                      setError('Please upload either a ZIP file or conversations.json')
                     }
                   }}
                   className="hidden"
