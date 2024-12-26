@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Card from '../ui/Card';
-import { staggerChildren } from '../ui/animations';
+import { staggerChildren, fadeUp } from '../ui/animations';
 
 interface SummaryStatsPageProps {
   stats: {
@@ -123,4 +123,4 @@ export default function SummaryStatsPage({ stats }: SummaryStatsPageProps) {
       </div>
     </div>
   );
-}  
+}     
