@@ -65,9 +65,7 @@
     border-color: hsl(var(--border));
   }
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    @apply antialiased;
+    @apply bg-black text-white antialiased;
   }
 }
 
