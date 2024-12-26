@@ -67,5 +67,12 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    @apply antialiased;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-purple-500 to-blue-500;
   }
 }
