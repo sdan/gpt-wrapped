@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fira_Sans } from "next/font/google";
+import { Fira_Sans, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -7,6 +7,11 @@ const fira = Fira_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-fira",
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 const interSemiBold = localFont({
@@ -69,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fira.variable} ${interSemiBold.variable}`}>
+    <html lang="en" className={`${fira.variable} ${inter.variable} ${interSemiBold.variable}`}>
       <head>
         <meta property="og:image" content="https://gpt-wrapped.com/og.png" />
         <meta property="og:image:width" content="1200" />
