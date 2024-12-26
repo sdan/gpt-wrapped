@@ -76,16 +76,7 @@ export default function RootLayout({
         <meta property="og:image:height" content="630" />
         <meta name="twitter:image" content="https://gpt-wrapped.com/og.png" />
       </head>
-      <body className="font-sans relative">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="fixed top-0 left-0 w-full h-full object-cover -z-10"
-        >
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
+      <body className="font-sans relative min-h-screen bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-black dark:via-gray-900 dark:to-gray-800">
         {children}
       </body>
     </html>

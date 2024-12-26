@@ -733,11 +733,13 @@ export default function LandingPage({
   }
 
   return (
-    <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center bg-black/85">
-      <div className="max-w-2xl w-full space-y-8">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">ChatGPT Wrapped</h1>
-          <p className="text-xl text-gray-400">wrap up your year with a wrapper</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-black dark:via-gray-900 dark:to-gray-800">
+      <div className="max-w-3xl w-full px-6 space-y-12">
+        <div className="text-center space-y-6">
+          <h1 className="text-6xl font-heading font-bold bg-gradient-to-r from-black to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+            ChatGPT Wrapped
+          </h1>
+          <p className="text-2xl text-gray-600 dark:text-gray-400">Your year in review, reimagined</p>
         </div>
 
         {!isProcessed && (
@@ -800,19 +802,19 @@ export default function LandingPage({
                   {error && <p className="text-red-400 text-sm">{error}</p>}
                 </div>
                 {isLoading && (
-                  <div className="w-full bg-zinc-800 rounded-full h-2 mt-4">
+                  <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2 mt-4">
                     <div
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-black dark:bg-white h-2 rounded-full transition-all duration-300"
                       style={{ width: `${processingStatus.progress}%` }}
                     />
                   </div>
                 )}
                 <label
                   htmlFor="file-upload"
-                  className={`inline-block px-4 py-2 rounded-md text-sm ${
+                  className={`inline-block px-6 py-3 rounded-md text-sm font-medium transition-colors ${
                     isLoading
-                      ? 'bg-zinc-700 cursor-not-allowed'
-                      : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'
+                      ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                      : 'bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 cursor-pointer'
                   }`}
                 >
                   {isLoading ? 'Processing...' : 'Select File'}
@@ -839,19 +841,19 @@ export default function LandingPage({
                     type="checkbox"
                     checked={enhancedWrapped}
                     onChange={(e) => setEnhancedWrapped(e.target.checked)}
-                    className="form-checkbox h-5 w-5 text-blue-600 rounded-sm bg-zinc-800 border-zinc-700"
+                    className="form-checkbox h-5 w-5 text-black dark:text-white rounded-sm bg-white dark:bg-black border border-gray-300 dark:border-gray-700"
                   />
-                  <span className="text-white">Enhanced Wrapped</span>
+                  <span className="text-gray-900 dark:text-gray-100">Enhanced Wrapped</span>
                 </label>
               </div>
             </div>
 
-            <div className="space-y-4 bg-zinc-900 p-6 rounded-lg border border-zinc-800 text-sm text-gray-400">
-              <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
-              <ul className="space-y-2 list-disc list-inside">
+            <div className="space-y-4 bg-white/50 dark:bg-black/50 backdrop-blur-sm p-8 rounded-lg text-sm">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Disclaimer:</h2>
+              <ul className="space-y-2 list-disc list-inside text-gray-600 dark:text-gray-400">
                 <li>
                   This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor
-                  Spotify. The code is open source and available on <a href="https://github.com/sdan/gpt-wrapped" className="text-blue-400 hover:underline">GitHub</a>.
+                  Spotify. The code is open source and available on <a href="https://github.com/sdan/gpt-wrapped" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a>.
                 </li>
                 <li>
                   We do not store any of your data - all processing happens locally in your browser
@@ -869,14 +871,14 @@ export default function LandingPage({
         )}
 
         {isProcessed && processedData?.stats && (
-          <div className="text-center space-y-6">
-            <div className="bg-green-500/10 text-green-400 p-6 rounded-lg border border-green-900">
-              <p className="text-xl font-semibold">✨ Your data is ready!</p>
-              <p className="text-sm mt-2">Click below to start your journey</p>
+          <div className="text-center space-y-8">
+            <div className="bg-white/50 dark:bg-black/50 backdrop-blur-sm p-8 rounded-lg border border-green-200 dark:border-green-900">
+              <p className="text-2xl font-semibold text-green-600 dark:text-green-400">✨ Your data is ready!</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-3">Click below to start your journey</p>
             </div>
             <button
               onClick={handleViewWrapped}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+              className="bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-lg text-lg font-semibold transition-colors hover:bg-gray-800 dark:hover:bg-gray-200"
             >
               View Your Wrapped
             </button>
@@ -884,13 +886,13 @@ export default function LandingPage({
         )}
       </div>
 
-      <div className="text-sm text-gray-400 mt-4">
+      <div className="text-sm text-gray-500 dark:text-gray-400 mt-8">
         Built by{' '}
         <a
           href="https://x.com/_rajanagarwal"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-400 hover:underline"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
         >
           Rajan
         </a>{' '}
@@ -899,7 +901,7 @@ export default function LandingPage({
           href="https://x.com/sdand"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-400 hover:underline"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
         >
           Surya
         </a>
