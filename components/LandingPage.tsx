@@ -250,6 +250,8 @@ export default function LandingPage({
   enhancedWrapped,
   setEnhancedWrapped,
 }: LandingPageProps) {
+  // Ensure content is centered and properly layered
+  const containerStyle = "w-full max-w-4xl mx-auto px-4 space-y-8 text-center";
   const [isDragging, setIsDragging] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isProcessed, setIsProcessed] = useState(false)
@@ -733,13 +735,16 @@ export default function LandingPage({
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white via-gray-50 to-gray-100 dark:from-black dark:via-gray-900 dark:to-gray-800">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black/60">
       <div className="max-w-3xl w-full px-6 space-y-12">
-        <div className="text-center space-y-6">
-          <h1 className="text-6xl font-heading font-bold bg-gradient-to-r from-black to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+        <div className="text-center space-y-8">
+          <h1 className="text-6xl font-heading font-bold text-white">
             ChatGPT Wrapped
           </h1>
-          <p className="text-2xl text-gray-600 dark:text-gray-400">Your year in review, reimagined</p>
+          <p className="text-2xl text-gray-300">Your year in review, reimagined</p>
+          <p className="text-lg text-gray-300 bg-zinc-900/80 backdrop-blur-sm px-6 py-3 rounded-lg inline-block">
+            ⚠️ An unofficial project, not affiliated with OpenAI (ChatGPT)
+          </p>
         </div>
 
         {!isProcessed && (
@@ -813,8 +818,8 @@ export default function LandingPage({
                   htmlFor="file-upload"
                   className={`inline-block px-6 py-3 rounded-md text-sm font-medium transition-colors ${
                     isLoading
-                      ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                      : 'bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 cursor-pointer'
+                      ? 'bg-zinc-700 text-gray-400 cursor-not-allowed'
+                      : 'bg-blue-500 text-white hover:bg-blue-600 cursor-pointer'
                   }`}
                 >
                   {isLoading ? 'Processing...' : 'Select File'}
@@ -848,9 +853,9 @@ export default function LandingPage({
               </div>
             </div>
 
-            <div className="space-y-4 bg-white/50 dark:bg-black/50 backdrop-blur-sm p-8 rounded-lg text-sm">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Disclaimer:</h2>
-              <ul className="space-y-2 list-disc list-inside text-gray-600 dark:text-gray-400">
+            <div className="space-y-4 bg-zinc-900/80 backdrop-blur-sm p-8 rounded-lg text-sm">
+              <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
+              <ul className="space-y-2 list-disc list-inside text-gray-300">
                 <li>
                   This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor
                   Spotify. The code is open source and available on <a href="https://github.com/sdan/gpt-wrapped" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a>.
@@ -872,13 +877,13 @@ export default function LandingPage({
 
         {isProcessed && processedData?.stats && (
           <div className="text-center space-y-8">
-            <div className="bg-white/50 dark:bg-black/50 backdrop-blur-sm p-8 rounded-lg border border-green-200 dark:border-green-900">
-              <p className="text-2xl font-semibold text-green-600 dark:text-green-400">✨ Your data is ready!</p>
-              <p className="text-gray-600 dark:text-gray-400 mt-3">Click below to start your journey</p>
+            <div className="bg-zinc-900/80 backdrop-blur-sm p-8 rounded-lg border border-green-500/30">
+              <p className="text-2xl font-semibold text-green-400">✨ Your data is ready!</p>
+              <p className="text-gray-300 mt-3">Click below to start your journey</p>
             </div>
             <button
               onClick={handleViewWrapped}
-              className="bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-lg text-lg font-semibold transition-colors hover:bg-gray-800 dark:hover:bg-gray-200"
+              className="bg-blue-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors hover:bg-blue-600"
             >
               View Your Wrapped
             </button>
@@ -886,13 +891,13 @@ export default function LandingPage({
         )}
       </div>
 
-      <div className="text-sm text-gray-500 dark:text-gray-400 mt-8">
+      <div className="text-sm text-gray-300 mt-8">
         Built by{' '}
         <a
           href="https://x.com/_rajanagarwal"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 dark:text-blue-400 hover:underline"
+          className="text-blue-400 hover:underline"
         >
           Rajan
         </a>{' '}
