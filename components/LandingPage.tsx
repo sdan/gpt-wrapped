@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Upload } from 'lucide-react';
 import JSZip from 'jszip';
+import { motion } from 'framer-motion';
+import Card from './ui/Card';
+import { staggerChildren, fadeUp } from './ui/animations';
+import { GRADIENTS, CORNERS } from './ui/constants';
 import AiPersonaPage from './ai-story-pages/AiPersonaPage';
 import AiChatThemesPage from './ai-story-pages/AiChatThemesPage';
 import AiQuipPage from './ai-story-pages/AiQuipPage';
@@ -733,11 +737,27 @@ export default function LandingPage({
   }
 
   return (
-    <div className="min-h-screen text-white p-6 flex flex-col items-center justify-center bg-black/85">
-      <div className="max-w-2xl w-full space-y-8">
+    <motion.div 
+      variants={staggerChildren}
+      initial="hidden"
+      animate="show"
+      className="min-h-screen text-white p-6 flex flex-col items-center justify-center bg-gradient-to-b from-black to-zinc-900/90"
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div variants={fadeUp} className="max-w-2xl w-full space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">ChatGPT Wrapped</h1>
-          <p className="text-xl text-gray-400">wrap up your year with a wrapper</p>
+          <motion.h1 
+            variants={fadeUp}
+            className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+          >
+            ChatGPT Wrapped
+          </motion.h1>
+          <motion.p 
+            variants={fadeUp}
+            className="text-xl text-gray-400"
+          >
+            wrap up your year with a wrapper
+          </motion.p>
         </div>
 
         {!isProcessed && (
@@ -882,7 +902,7 @@ export default function LandingPage({
             </button>
           </div>
         )}
-      </div>
+      </motion.div>
 
       <div className="text-sm text-gray-400 mt-4">
         Built by{' '}
@@ -904,6 +924,6 @@ export default function LandingPage({
           Surya
         </a>
       </div>
-    </div>
+    </motion.div>
   )
 }

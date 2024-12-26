@@ -1,0 +1,18 @@
+{
+  "conversations": [
+    {
+      "title": "Test Chat 1",
+      "messages": [
+        {"role": "user", "content": "Hello"},
+        {"role": "assistant", "content": "Hi there!"}
+      ]
+    },
+    {
+      "title": "Test Chat 2",
+      "messages": [
+        {"role": "user", "content": "Thank you"},
+        {"role": "assistant", "content": "You're welcome!"}
+      ]
+    }
+  ]
+}
