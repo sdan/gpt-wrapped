@@ -51,7 +51,7 @@ export default function StatsPage({ stats }: StatsPageProps) {
           priority
         />
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center px-4 relative">
+      <div className="flex-1 flex flex-col items-center justify-center px-8 relative">
         {/* Left decorative image */}
         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-24 h-48">
           <Image
@@ -72,10 +72,10 @@ export default function StatsPage({ stats }: StatsPageProps) {
         </div>
 
         {/* Content */}
-        <div className="text-center space-y-6 relative z-10 max-w-sm w-full">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold text-white">Your ChatGPT Style</h2>
-            <p className="text-xl text-green-400">{timeLabels[timePreference as keyof typeof timeLabels]}</p>
+        <div className="text-center space-y-12 relative z-10 max-w-sm w-full">
+          <div className="space-y-4">
+            <h2 className="text-4xl font-bold text-white mb-4">Your ChatGPT Style</h2>
+            <p className="text-xl text-gray-400">{timeLabels[timePreference as keyof typeof timeLabels]}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">

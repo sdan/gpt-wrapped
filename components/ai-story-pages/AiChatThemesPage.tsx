@@ -21,8 +21,8 @@ export default function AiChatThemesPage({ themes }: AiChatThemesPageProps) {
           priority
         />
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center relative">
-        <div className="text-center relative z-10 w-full px-8 space-y-12">
+      <div className="flex-1 flex flex-col items-center justify-center px-8 relative">
+        <div className="text-center relative z-10 w-full space-y-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export default function AiChatThemesPage({ themes }: AiChatThemesPageProps) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 * index }}
-                  className="text-3xl font-bold text-purple-400"
+                  className="text-4xl font-bold text-purple-400"
                 >
                   {topic}
                 </motion.p>

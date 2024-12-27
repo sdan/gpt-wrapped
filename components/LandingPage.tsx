@@ -735,14 +735,14 @@ export default function LandingPage({
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black/60 pt-16">
-      <div className="max-w-3xl w-full px-6 space-y-16">
-        <div className="text-center space-y-10">
-          <h1 className="text-6xl font-heading font-bold text-white mt-8">
+    <div className="min-h-screen flex flex-col items-center bg-black/60 pt-24">
+      <div className="max-w-3xl w-full px-8 space-y-12">
+        <div className="text-center space-y-8">
+          <h1 className="text-6xl font-heading font-bold text-white">
             ChatGPT Wrapped
           </h1>
           <p className="text-2xl text-gray-300">Your year in review, reimagined</p>
-          <p className="text-lg text-gray-300 bg-zinc-900/80 backdrop-blur-sm px-6 py-3 rounded-lg inline-block">
+          <p className="text-lg text-gray-300 bg-zinc-900/80 backdrop-blur-sm px-8 py-4 rounded-lg inline-block">
             ⚠️ An unofficial project, not affiliated with OpenAI (ChatGPT)
           </p>
         </div>

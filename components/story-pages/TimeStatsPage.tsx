@@ -77,8 +77,8 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
           priority
         />
       </div>
-      <div className="flex-1 flex items-center justify-center px-4 relative">
-        <div className="text-center relative z-10 max-w-md w-full">
+      <div className="flex-1 flex items-center justify-center px-8 relative">
+        <div className="text-center relative z-10 max-w-md w-full space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export default function TimeStatsPage({ stats }: TimeStatsPageProps) {
             className="mb-8"
           >
             <p className="text-xl text-gray-400 mb-3 text-balance">Most Active During</p>
-            <p className="text-6xl font-bold text-white text-balance leading-none [.rendering_&]:translate-y-[-25%]">
+            <p className="text-4xl font-bold text-white text-balance leading-none mb-3">
               {timeDescriptions[timePreference as keyof typeof timeDescriptions].title}
             </p>
           </motion.div>
