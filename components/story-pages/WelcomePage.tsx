@@ -14,12 +14,12 @@ export default function WelcomePage() {
           priority
         />
       </div>
-      <div className="flex-1 flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">
+      <div className="flex-1 flex items-center justify-center px-8">
+        <div className="text-center relative z-10 w-full space-y-8">
+          <h1 className="text-4xl font-bold text-white mb-4">
             ChatGPT Wrapped
           </h1>
-          <p className="text-xl text-gray-300">The 13th Day of Christmas</p>
+          <p className="text-xl text-gray-400">The 13th Day of Christmas</p>
         </div>
       </div>
       <div className="w-full h-1/4 relative">

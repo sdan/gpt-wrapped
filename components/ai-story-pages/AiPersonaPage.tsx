@@ -22,15 +22,15 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
           priority
         />
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center relative">
-        <div className="text-center relative z-10 w-full px-8 space-y-12">
+      <div className="flex-1 flex flex-col items-center justify-center px-8 relative">
+        <div className="text-center relative z-10 w-full space-y-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             <p className="text-xl text-gray-400 mb-3">Your AI Persona</p>
-            <p className="text-3xl font-bold text-blue-300 leading-tight text-balance">
+            <p className="text-4xl font-bold text-blue-300 leading-tight text-balance mb-3">
               {persona.persona_description}
             </p>
           </motion.div>
@@ -41,7 +41,7 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <p className="text-xl text-gray-400 mb-3">Vibe Check</p>
-            <p className="text-3xl text-blue-300 leading-snug text-balance">
+            <p className="text-4xl text-blue-300 leading-snug text-balance mb-3">
               {persona.persona_vibe}  
             </p>
           </motion.div>
@@ -60,4 +60,4 @@ export default function AiPersonaPage({ persona }: AiPersonaPageProps) {
       </div>
     </div>
   );
-} 
+}       
