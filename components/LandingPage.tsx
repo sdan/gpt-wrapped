@@ -735,14 +735,14 @@ export default function LandingPage({
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-black/60 pt-24">
+    <div className="min-h-screen flex flex-col items-center pt-24">
       <div className="max-w-3xl w-full px-8 space-y-12">
         <div className="text-center space-y-8">
-          <h1 className="text-6xl font-heading font-bold text-white">
+          <h1 className="text-6xl font-heading font-extrabold text-foreground">
             ChatGPT Wrapped
           </h1>
-          <p className="text-2xl text-gray-300">Your year in review, reimagined</p>
-          <p className="text-lg text-gray-300 bg-zinc-900/80 backdrop-blur-sm px-8 py-4 rounded-lg inline-block">
+          <p className="text-2xl text-muted-foreground">Your year in review, reimagined</p>
+          <p className="text-lg text-muted-foreground bg-secondary/80 backdrop-blur-sm px-8 py-4 rounded-lg inline-block border border-border/50">
             ⚠️ An unofficial project, not affiliated with OpenAI (ChatGPT)
           </p>
         </div>
@@ -770,8 +770,8 @@ export default function LandingPage({
             </div>
 
             <div
-              className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors bg-zinc-900 ${
-                isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-zinc-800 hover:border-zinc-700'
+              className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors bg-secondary/80 ${
+                isDragging ? 'border-primary bg-primary/10' : 'border-border hover:border-border/80'
               }`}
               onDragOver={(e) => {
                 e.preventDefault()
@@ -794,17 +794,17 @@ export default function LandingPage({
               }}
             >
               <div className="space-y-4">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
                 <div className="space-y-2">
-                  <p className="text-lg">
+                  <p className="text-lg text-foreground">
                     {isLoading ? processingStatus.step : 'Drop your ZIP or conversations.json file here'}
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {isLoading
                       ? `${processingStatus.progress.toFixed(1)}% complete`
                       : 'or click to browse'}
                   </p>
-                  {error && <p className="text-red-400 text-sm">{error}</p>}
+                  {error && <p className="text-red-500 text-sm">{error}</p>}
                 </div>
                 {isLoading && (
                   <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2 mt-4">
@@ -818,8 +818,8 @@ export default function LandingPage({
                   htmlFor="file-upload"
                   className={`inline-block px-6 py-3 rounded-md text-sm font-medium transition-colors ${
                     isLoading
-                      ? 'bg-zinc-700 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-500 text-white hover:bg-blue-600 cursor-pointer'
+                      ? 'bg-secondary text-muted-foreground cursor-not-allowed'
+                      : 'bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer'
                   }`}
                 >
                   {isLoading ? 'Processing...' : 'Select File'}
@@ -853,12 +853,12 @@ export default function LandingPage({
               </div>
             </div>
 
-            <div className="space-y-4 bg-zinc-900/80 backdrop-blur-sm p-8 rounded-lg text-sm">
-              <h2 className="text-lg font-semibold text-white">Disclaimer:</h2>
-              <ul className="space-y-2 list-disc list-inside text-gray-300">
+            <div className="space-y-4 bg-secondary/80 backdrop-blur-sm p-8 rounded-lg text-sm border border-border/50">
+              <h2 className="text-lg font-semibold text-foreground">Disclaimer:</h2>
+              <ul className="space-y-2 list-disc list-inside text-muted-foreground">
                 <li>
                   This is a fun, unofficial project not affiliated with or endorsed by OpenAI nor
-                  Spotify. The code is open source and available on <a href="https://github.com/sdan/gpt-wrapped" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a>.
+                  Spotify. The code is open source and available on <a href="https://github.com/sdan/gpt-wrapped" className="text-primary hover:underline">GitHub</a>.
                 </li>
                 <li>
                   We do not store any of your data - all processing happens locally in your browser
@@ -877,13 +877,13 @@ export default function LandingPage({
 
         {isProcessed && processedData?.stats && (
           <div className="text-center space-y-8">
-            <div className="bg-zinc-900/80 backdrop-blur-sm p-8 rounded-lg border border-green-500/30">
-              <p className="text-2xl font-semibold text-green-400">✨ Your data is ready!</p>
-              <p className="text-gray-300 mt-3">Click below to start your journey</p>
+            <div className="bg-secondary/80 backdrop-blur-sm p-8 rounded-lg border border-primary/30">
+              <p className="text-2xl font-semibold text-primary">✨ Your data is ready!</p>
+              <p className="text-muted-foreground mt-3">Click below to start your journey</p>
             </div>
             <button
               onClick={handleViewWrapped}
-              className="bg-blue-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors hover:bg-blue-600"
+              className="bg-primary text-primary-foreground px-8 py-4 rounded-lg text-lg font-semibold transition-colors hover:bg-primary/90"
             >
               View Your Wrapped
             </button>
@@ -891,13 +891,13 @@ export default function LandingPage({
         )}
       </div>
 
-      <div className="text-sm text-gray-300 mt-8">
+      <div className="text-sm text-muted-foreground mt-8">
         Built by{' '}
         <a
           href="https://x.com/_rajanagarwal"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-400 hover:underline"
+          className="text-primary hover:underline"
         >
           Rajan
         </a>{' '}
@@ -906,7 +906,7 @@ export default function LandingPage({
           href="https://x.com/sdand"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 dark:text-blue-400 hover:underline"
+          className="text-primary hover:underline"
         >
           Surya
         </a>

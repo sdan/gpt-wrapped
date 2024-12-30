@@ -77,22 +77,10 @@ export default function RootLayout({
         <meta name="twitter:image" content="https://gpt-wrapped.com/og.png" />
       </head>
       <body className="font-sans">
-        <div className="fixed inset-0 w-full h-full overflow-hidden bg-black">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="absolute min-w-full min-h-full w-auto h-auto object-cover"
-            style={{ zIndex: 0 }}
-          >
-            <source src="background.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-black/60" style={{ zIndex: 1 }} />
+        <div className="fixed inset-0 w-full h-full overflow-hidden bg-gradient-to-b from-background to-secondary">
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
         </div>
-        <main className="relative min-h-screen z-10 flex flex-col items-center justify-center">
+        <main className="relative min-h-screen z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
           {children}
         </main>
       </body>
